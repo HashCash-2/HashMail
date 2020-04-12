@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const navLinkProps = (path, animationDelay) => ({
@@ -17,23 +16,19 @@ const Navbar = () => {
         transition: "all 0.3s ease-in-out",
       }}
     >
-      <Link to="/">
-        <img
-          className="fadeInUp logo"
-          alt="Hash Mail"
-          src="/icon.png"
-          style={{
-            animationDelay: "0.0s",
-            transition: "all 0.3s ease-in-out",
-          }}
-        />
-      </Link>
+      <img
+        className="fadeInUp logo"
+        alt="Hash Mail"
+        src="/icon.png"
+        style={{
+          animationDelay: "0.0s",
+          transition: "all 0.3s ease-in-out",
+        }}
+      />
 
       <div className="navbar-left">
         <div className="navbar-menu">
-          <Link>
-            <span {...navLinkProps("/", 0.2)}>Hash Mail</span>
-          </Link>
+          <span {...navLinkProps("/", 0.2)}>Hash Mail</span>
         </div>
       </div>
 

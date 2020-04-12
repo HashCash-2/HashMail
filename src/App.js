@@ -1,19 +1,21 @@
 import React from "react";
-import { BrowserRouter as Router } from "react-router-dom";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
 
 import "./App.scss";
-import Navbar from "./components/navbar";
+import Navbar from "./components/Common/navbar";
 import Home from "./components/home";
-
-const history = require("history").createBrowserHistory;
+import Login from "./components/Login/login";
 
 function App() {
   return (
     <div className="App">
-      <Router history={history}>
-        <Navbar />
-      </Router>
-      <Home />
+      <Navbar />
+      <BrowserRouter>
+        <Switch>
+          <Route exact path="/login" component={Login} />
+          <Route path="/" component={Home} />
+        </Switch>
+      </BrowserRouter>
     </div>
   );
 }
