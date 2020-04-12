@@ -1,22 +1,20 @@
-import React from "react";
-import MailSmall from "./mailSmall";
+import React, { useState, useEffect } from "react";
+import EachMail from "./eachMail";
 
-const MailList = () => {
+const MailList = (props) => {
+  const whichBox = props.whichBox;
+
   return (
-    <div className="updates fadeInUp" style={{ animationDelay: "1.7s" }}>
-      <MailSmall date={"5 minutues Ago"} sender={"Kautuk Kundan"} subject={"Hey, I want you to take a look on this thing. I feel it's very important."} />
-      <MailSmall date={"5 minutues Ago"} sender={"Kautuk Kundan"} subject={"Hey, I want you to take a look on this thing. I feel it's very important."} />
-      <MailSmall date={"5 minutues Ago"} sender={"Kautuk Kundan"} subject={"Hey, I want you to take a look on this thing. I feel it's very important."} />
-      <MailSmall date={"5 minutues Ago"} sender={"Kautuk Kundan"} subject={"Hey, I want you to take a look on this thing. I feel it's very important."} />
-      <MailSmall date={"5 minutues Ago"} sender={"Kautuk Kundan"} subject={"Hey, I want you to take a look on this thing. I feel it's very important."} />
-      <MailSmall date={"5 minutues Ago"} sender={"Kautuk Kundan"} subject={"Hey, I want you to take a look on this thing. I feel it's very important."} />
-      <MailSmall date={"5 minutues Ago"} sender={"Kautuk Kundan"} subject={"Hey, I want you to take a look on this thing. I feel it's very important."} />
-      <MailSmall date={"5 minutues Ago"} sender={"Kautuk Kundan"} subject={"Hey, I want you to take a look on this thing. I feel it's very important."} />
-      <MailSmall date={"5 minutues Ago"} sender={"Kautuk Kundan"} subject={"Hey, I want you to take a look on this thing. I feel it's very important."} />
-      <MailSmall date={"5 minutues Ago"} sender={"Kautuk Kundan"} subject={"Hey, I want you to take a look on this thing. I feel it's very important."} />
-      <MailSmall date={"5 minutues Ago"} sender={"Kautuk Kundan"} subject={"Hey, I want you to take a look on this thing. I feel it's very important."} />
-      <MailSmall date={"5 minutues Ago"} sender={"Kautuk Kundan"} subject={"Hey, I want you to take a look on this thing. I feel it's very important."} />
-      <MailSmall date={"5 minutues Ago"} sender={"Kautuk Kundan"} subject={"Hey, I want you to take a look on this thing. I feel it's very important."} />
+    <div className="updates">
+      {[...Array(5)].map((item) => {
+        return (
+          <EachMail
+            date={"5 minutues Ago"}
+            sender={"Kautuk Kundan"}
+            subject={`This email is in ${whichBox}`}
+          />
+        );
+      })}
     </div>
   );
 };

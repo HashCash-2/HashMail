@@ -1,8 +1,8 @@
 import React from "react";
 
-const MailSmall = (props) => {
+const EachMail = (props) => {
   return (
-    <div className="email">
+    <div className="email fadeInUp" style={{ animationDelay: "1.7s" }}>
       <div className="update email-left">
         <h2>SUBJECT : {props.subject}</h2>
         <br />
@@ -17,4 +17,4 @@ const MailSmall = (props) => {
   );
 };
 
-export default MailSmall;
+export default EachMail;

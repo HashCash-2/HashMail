@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 
 import "./App.scss";
 import Navbar from "./components/Common/navbar";
@@ -20,4 +20,4 @@ function App() {
   );
 }
 
-export default React.memo(App);
+export default App;

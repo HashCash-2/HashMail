@@ -41,7 +41,7 @@ const LoginBox = () => {
       //   } else {
       //     swal("Oops!", "Something went wrong! Please Retry", "error");
       //   }
-      history.push("/");
+      history.push("/inbox");
     }
   };
 

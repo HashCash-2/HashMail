@@ -253,7 +253,7 @@ h6 {
     width: 75%;
 
     .small-width {
-        width: 40rem;
+      width: 40rem;
     }
   }
 }
@@ -564,7 +564,7 @@ h6 {
     padding: 0.55rem;
 
     h5 {
-        text-transform: unset;
+      text-transform: unset;
     }
 
     h1,
@@ -742,6 +742,7 @@ h6 {
 }
 
 .button {
+  width: 17rem;
   display: flex;
   flex-direction: row;
   padding: 0.5rem;
@@ -769,6 +770,7 @@ h6 {
   &.is-purple {
     color: $purple-mid;
     background: $purple-light;
+    justify-content: center;
 
     &:hover {
       background: $purple-hover;
@@ -794,7 +796,6 @@ h6 {
 }
 
 .telegram {
-  width: 16.1rem;
   background: $gray-light !important;
   color: #08c !important;
   padding-left: 0.65rem;
