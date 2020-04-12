@@ -8,11 +8,11 @@ import LogoutButton from "./logoutButton";
 import DetailView from "../Detail/detailView";
 
 const Home = () => {
-  //   let history = useHistory();
+    let history = useHistory();
 
-  //   useEffect(() => {
-  //     history.push("/inbox");
-  //   }, []);
+    useEffect(() => {
+      history.push("/inbox");
+    }, []);
 
   return (
     <React.Fragment>

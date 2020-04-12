@@ -8,12 +8,12 @@ const Tabs = () => {
   const outbox = useStoreState((state) => state.emails.sent);
 
   return (
-    <div className="MapExplorer fadeInUp" style={{ animationDelay: "1.2s" }}>
+    <div className="MapExplorer fadeInUp" style={{ animationDelay: "0.7s" }}>
       <Link to="/inbox">
         <div className="map-stats">
           <div
             className="stats fadeInUp is-green"
-            style={{ animationDelay: "1s" }}
+            style={{ animationDelay: "0.5s" }}
           >
             <h5>
               <Inbox size={15} /> INBOX{" "}
@@ -30,7 +30,7 @@ const Tabs = () => {
         <div className="map-stats">
           <div
             className="stats fadeInUp is-gray"
-            style={{ animationDelay: "1s" }}
+            style={{ animationDelay: "0.5s" }}
           >
             <h5>
               <Send size={15} /> SENT

@@ -51,7 +51,7 @@ const SignUpBox = () => {
     <div className="sign-up">
       <CustomHeader title={"or Sign-Up"} />
 
-      <Form className="fadeInUp" style={{ animationDelay: "1.2s" }}>
+      <Form className="fadeInUp" style={{ animationDelay: "0.8s" }}>
         <Form.Group widths="equal">
           <Form.Input
             fluid

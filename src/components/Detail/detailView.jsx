@@ -28,7 +28,7 @@ const DetailView = ({ match }) => {
   return (
     <div className="mailDetail">
       <CustomHeader title={mail.subject} subtitle={mail.from} />
-      <div className="mailbody fadeInUp" style={{ animationDelay: "1.2s" }}>
+      <div className="mailbody fadeInUp" style={{ animationDelay: "0.7s" }}>
         {mail.body}
         <br />
         <br />

@@ -16,7 +16,7 @@ const Login = () => {
             frameBorder="0"
             className="giphy-embed fadeInUp"
             title="NyanCat"
-            style={{ animationDelay: "1s" }}
+            style={{ animationDelay: "0.5s" }}
           ></iframe>
         </div>
 

@@ -7,7 +7,7 @@ const LogoutButton = () => {
   return (
     <div
       className="fadeInUp button is-purple"
-      style={{ animationDelay: "1.5s" }}
+      style={{ animationDelay: "1s" }}
       onClick={() => history.push("/login")}
     >
       <LogOut />

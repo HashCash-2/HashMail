@@ -7,7 +7,7 @@ const EachMail = (props) => {
   return (
     <div
       className="email fadeInUp"
-      style={{ animationDelay: `${1 + props.index / 10}s` }}
+      style={{ animationDelay: `${0.5 + props.index / 10}s` }}
       onClick={() => history.push(`/${props.box}/${props.id}`)}
     >
       <div className="email-right">

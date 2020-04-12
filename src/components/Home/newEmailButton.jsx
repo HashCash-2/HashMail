@@ -5,7 +5,7 @@ const NewEmailButton = () => {
   return (
     <div
       className="fadeInUp button telegram"
-      style={{ animationDelay: "1.5s" }}
+      style={{ animationDelay: "1s" }}
     >
       <Mail />
       <span>Send New Hash Mail</span>

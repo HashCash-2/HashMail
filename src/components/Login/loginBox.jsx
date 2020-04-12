@@ -48,7 +48,7 @@ const LoginBox = () => {
   return (
     <div className="login">
       <CustomHeader title={"Login"} />
-      <Form className="fadeInUp" style={{ animationDelay: "1.2s" }}>
+      <Form className="fadeInUp" style={{ animationDelay: "0.8s" }}>
         <Form.Field>
           <label>Email</label>
           <input
