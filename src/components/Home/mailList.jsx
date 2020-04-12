@@ -27,6 +27,8 @@ const MailList = (props) => {
           <EachMail
             key={index}
             index={index}
+            box={whichBox}
+            id={mail.id}
             date={mail.date}
             sender={mail.from}
             subject={mail.subject}

@@ -1,10 +1,14 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
 
 const EachMail = (props) => {
+  let history = useHistory();
+
   return (
     <div
       className="email fadeInUp"
       style={{ animationDelay: `${1 + props.index / 10}s` }}
+      onClick={() => history.push(`/${props.box}/${props.id}`)}
     >
       <div className="email-right">
         <h5>HashCash</h5>

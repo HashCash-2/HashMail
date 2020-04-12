@@ -8,7 +8,7 @@ const Tabs = () => {
   const outbox = useStoreState((state) => state.emails.sent);
 
   return (
-    <div className="MapExplorer fadeInUp" style={{ animationDelay: "1.5s" }}>
+    <div className="MapExplorer fadeInUp" style={{ animationDelay: "1.2s" }}>
       <Link to="/inbox">
         <div className="map-stats">
           <div

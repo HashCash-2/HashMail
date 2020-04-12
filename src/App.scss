@@ -542,6 +542,17 @@ h6 {
   }
 }
 
+.mailDetail {
+  .mailbody {
+    background: #f6f6f7;
+    padding: 20px;
+    border-radius: 5px;
+    font-size: 1.5rem;
+    line-height: 2rem;
+    font-weight: 200;
+  }
+}
+
 .email {
   display: flex;
 

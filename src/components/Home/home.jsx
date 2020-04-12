@@ -8,7 +8,7 @@ import LogoutButton from "./logoutButton";
 import DetailView from "../Detail/detailView";
 
 const Home = () => {
-  let history = useHistory();
+  //   let history = useHistory();
 
   //   useEffect(() => {
   //     history.push("/inbox");
@@ -28,19 +28,17 @@ const Home = () => {
         </div>
         <div className="home-right">
           <Switch>
-            <Route path="/inbox">
+            <Route exact path="/inbox">
               <CustomHeader title={"Inbox"} />
               <MailList whichBox={"inbox"} />
             </Route>
-            <Route path="/outbox">
+
+            <Route exact path="/outbox">
               <CustomHeader title={"Outbox"} />
               <MailList whichBox={"outbox"} />
             </Route>
 
-            <Route path="/inbox/:int">
-              <DetailView />
-            </Route>
-
+            <Route path="/:box/:mailid" component={DetailView} />
           </Switch>
         </div>
       </div>
