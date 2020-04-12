@@ -3,7 +3,7 @@ import { BrowserRouter, Switch, Route } from "react-router-dom";
 
 import "./App.scss";
 import Navbar from "./components/Common/navbar";
-import Home from "./components/home";
+import Home from "./components/Home/home";
 import Login from "./components/Login/login";
 
 function App() {
@@ -20,4 +20,4 @@ function App() {
   );
 }
 
-export default App;
+export default React.memo(App);

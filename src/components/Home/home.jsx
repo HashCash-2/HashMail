@@ -1,7 +1,7 @@
 import React from "react";
 import Tabs from "./tabs";
 import NewEmailButton from "./newEmailButton";
-import CustomHeader from "./Common/customHeader";
+import CustomHeader from "../Common/customHeader";
 import MailList from "./mailList";
 
 const Home = () => {

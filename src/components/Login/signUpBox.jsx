@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import CustomHeader from "../Common/customHeader";
 import { Form, Button } from "semantic-ui-react";
+import { useHistory } from "react-router-dom";
 import swal from "sweetalert";
 
 const SignUpBox = () => {
@@ -9,6 +10,8 @@ const SignUpBox = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+
+  let history = useHistory();
 
   const handleSubmit = async () => {
     if (email.match(`[a-zA-Z0-9._-]+@[a-z]+.(com|in|net|org|edu)`) === null) {
@@ -40,6 +43,7 @@ const SignUpBox = () => {
       //   } else {
       //     swal("Oops!", "Something went wrong! Please Retry", "error");
       //   }
+      history.push("/");
     }
   };
 
