@@ -5,13 +5,14 @@ import CustomHeader from "../Common/customHeader";
 import MailList from "./mailList";
 import { Route, Switch, useHistory } from "react-router-dom";
 import LogoutButton from "./logoutButton";
+import DetailView from "../Detail/detailView";
 
 const Home = () => {
   let history = useHistory();
 
-  useEffect(() => {
-    history.push("/inbox");
-  }, []);
+  //   useEffect(() => {
+  //     history.push("/inbox");
+  //   }, []);
 
   return (
     <React.Fragment>
@@ -35,6 +36,11 @@ const Home = () => {
               <CustomHeader title={"Outbox"} />
               <MailList whichBox={"outbox"} />
             </Route>
+
+            <Route path="/inbox/:int">
+              <DetailView />
+            </Route>
+
           </Switch>
         </div>
       </div>

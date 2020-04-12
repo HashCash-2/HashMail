@@ -547,6 +547,17 @@ h6 {
 
   .email-left {
     width: 85%;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    .left {
+      max-width: 65%;
+    }
+
+    .right {
+      text-align: right;
+    }
   }
 
   .email-right {

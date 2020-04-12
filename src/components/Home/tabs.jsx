@@ -1,8 +1,12 @@
 import React from "react";
 import { Send, Inbox } from "react-feather";
 import { Link } from "react-router-dom";
+import { useStoreState } from "easy-peasy";
 
 const Tabs = () => {
+  const inbox = useStoreState((state) => state.emails.inbox);
+  const outbox = useStoreState((state) => state.emails.sent);
+
   return (
     <div className="MapExplorer fadeInUp" style={{ animationDelay: "1.5s" }}>
       <Link to="/inbox">
@@ -15,7 +19,7 @@ const Tabs = () => {
               <Inbox size={15} /> INBOX{" "}
             </h5>
             <div className="stats-bottom">
-              <h1>{200}</h1>
+              <h1>{inbox.length}</h1>
               {/* <h6></h6> */}
             </div>
           </div>
@@ -32,7 +36,7 @@ const Tabs = () => {
               <Send size={15} /> SENT
             </h5>
             <div className="stats-bottom">
-              <h1>{200}</h1>
+              <h1>{outbox.length}</h1>
               {/* <h6></h6> */}
             </div>
           </div>

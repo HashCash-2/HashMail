@@ -1,17 +1,35 @@
 import React, { useState, useEffect } from "react";
 import EachMail from "./eachMail";
+import { useStoreState } from "easy-peasy";
 
 const MailList = (props) => {
   const whichBox = props.whichBox;
+  const inbox = useStoreState((state) => state.emails.inbox);
+  const outbox = useStoreState((state) => state.emails.sent);
+
+  const [mails, setMails] = useState([]);
+
+  useEffect(() => {
+    if (whichBox === "inbox") {
+      setMails(inbox);
+    } else if (whichBox === "outbox") {
+      setMails(outbox);
+    }
+    return () => {
+      setMails([]);
+    };
+  }, [whichBox]);
 
   return (
     <div className="updates">
-      {[...Array(5)].map((item) => {
+      {mails.map((mail, index) => {
         return (
           <EachMail
-            date={"5 minutues Ago"}
-            sender={"Kautuk Kundan"}
-            subject={`This email is in ${whichBox}`}
+            key={index}
+            index={index}
+            date={mail.date}
+            sender={mail.from}
+            subject={mail.subject}
           />
         );
       })}
