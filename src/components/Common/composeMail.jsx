@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import { Form, Button, TextArea } from "semantic-ui-react";
 import swal from "sweetalert";
+import Axios from 'axios'
+import {URL} from '../../globalvariables'
 
 const ComposeMail = (props) => {
   const [email, setEmail] = useState(props.mail ? props.mail : "");
   const [subject, setSubject] = useState("");
+  const [hashkey, setHashkey] = useState("");
   const [body, setBody] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -18,21 +21,30 @@ const ComposeMail = (props) => {
     } else {
       setLoading(true);
       //   const response = await login(email, password);
-      console.log("body", email, subject, body);
-      setLoading(false);
-      //   if (response.status === 200) {
-      //     setToken(response.data.token);
-      //     history.push("/");
-      //   } else if (
-      //     response.status === 400 &&
-      //     response.data.non_field_errors[0] ===
-      //       "Unable to log in with provided credentials."
-      //   ) {
-      //     swal("Error", "Email or Password seems incorrect!", "error");
-      //   } else {
-      //     swal("Oops!", "Something went wrong! Please Retry", "error");
-      //   }
-      window.location.reload();
+      let obj={}
+      obj.receiver_email = email
+      obj.sender_email="random@gmail.com"
+      obj.subject = subject
+      obj.text = body
+      obj.hashKey = hashkey
+      obj.html = " "
+      console.log("body", email, subject, body, hashkey, obj);
+      Axios.defaults.headers.common['Authorization'] = localStorage.getItem('HCtoken');
+      Axios.post(`${URL}/api/email/send`,obj).then(data => {
+        console.log(data);
+           
+        window.location.reload();
+      }).catch(error => {
+        setLoading(false);
+
+        swal(
+          "Error",
+          "Couldnt send email right now",
+          "error"
+        );
+      })
+      
+  
     }
   };
 
@@ -61,6 +73,14 @@ const ComposeMail = (props) => {
             type="text"
             onChange={(e) => setSubject(e.target.value)}
             name="subject"
+          />
+        </Form.Field>
+        <Form.Field>
+          <label>HashKey</label>
+          <input
+            type="text"
+            onChange={(e) => setHashkey(e.target.value)}
+            name="hashkey"
           />
         </Form.Field>
         <Form.Field>

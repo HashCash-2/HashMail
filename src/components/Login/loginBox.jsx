@@ -3,6 +3,9 @@ import CustomHeader from "../Common/customHeader";
 import { Form, Button } from "semantic-ui-react";
 import swal from "sweetalert";
 import { useHistory } from "react-router-dom";
+import Axios from 'axios'
+import setAuthToken from '../../utils/setAuthToken'
+import {URL} from '../../globalvariables';
 
 const LoginBox = () => {
   const [email, setEmail] = useState("");
@@ -26,22 +29,29 @@ const LoginBox = () => {
       );
     } else {
       setLoading(true);
-      //   const response = await login(email, password);
-      console.log("login", email, password);
-      setLoading(false);
-      //   if (response.status === 200) {
-      //     setToken(response.data.token);
-      //     history.push("/");
-      //   } else if (
-      //     response.status === 400 &&
-      //     response.data.non_field_errors[0] ===
-      //       "Unable to log in with provided credentials."
-      //   ) {
-      //     swal("Error", "Email or Password seems incorrect!", "error");
-      //   } else {
-      //     swal("Oops!", "Something went wrong! Please Retry", "error");
-      //   }
-      history.push("/inbox");
+      let obj={}
+      obj.email = email
+      obj.password = password
+      console.log("login", obj);
+
+      Axios.post(`${URL}/user/login`,obj).then(data => {
+        console.log(data);        
+        if(data.data.success === true){
+          setLoading(false);
+          const {token} = data.data 
+          localStorage.setItem('HCtoken',token)
+          setAuthToken(token);
+          history.push("/inbox");
+        }
+      }).catch(error => {
+        console.log(error.response.data);
+        setLoading(false);
+        swal(
+          "Error",
+          "email or password incorrect",
+          "error"
+        );
+      })
     }
   };
 

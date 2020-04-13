@@ -1,9 +1,19 @@
-import React from "react";
+import React,{useEffect} from "react";
 import CustomHeader from "../Common/customHeader";
 import LoginBox from "./loginBox";
 import SignUpBox from "./signUpBox";
+import {  useHistory } from "react-router-dom";
 
 const Login = () => {
+  let history = useHistory();
+
+  useEffect(()=>{
+    if(localStorage.getItem("HCtoken")){
+      history.push("/");
+    }
+  })
+
+
   return (
     <React.Fragment>
       <div className="Home">
