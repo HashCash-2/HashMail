@@ -846,11 +846,12 @@ h6 {
 }
 
 .excel {
-  color: #33a667;
-  background: #33a66730;
+  color: $cherry;
+  background: $orange-light-opaque;
+  justify-content: center;
 
   &:hover {
-    background: #33a66750;
+    background: $orange-hover;
   }
 }
 
@@ -1222,6 +1223,12 @@ table {
 .map-hover {
   stroke: #ff073a;
   stroke-width: 2;
+}
+
+.all-tokens {
+  background: $orange-light-opaque;
+  width: 17rem;
+  border-radius: 5px;
 }
 
 .MapExplorer {
