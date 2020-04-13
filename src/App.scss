@@ -2445,113 +2445,113 @@ body.modal-open {
   width: -moz-calc(100% - 16px); //for firefox
 }
 
-.modal {
-  position: fixed;
-  height: 100vh;
-  width: 100vw;
-  top: 0;
-  left: 0;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  background: $pblue-mid;
-  cursor: pointer;
-  z-index: 9999;
-  .modal-content {
-    position: fixed;
-    padding: 1rem;
-    border-radius: 5px;
-    align-self: center;
-    background: #fff;
-    width: 30rem;
-    height: 30rem;
-    cursor: default;
-    overflow-y: auto;
-    svg {
-      width: 20px;
-      stroke: $pblue-mid;
-      stroke-width: 3;
-      transition: all 0.1s ease-in-out;
-      &:hover {
-        stroke: $pblue;
-      }
-    }
+// .modal {
+//   position: fixed;
+//   height: 100vh;
+//   width: 100vw;
+//   top: 0;
+//   left: 0;
+//   display: flex;
+//   flex-direction: row;
+//   justify-content: center;
+//   background: $pblue-mid;
+//   cursor: pointer;
+//   z-index: 9999;
+//   .modal-content {
+//     position: fixed;
+//     padding: 1rem;
+//     border-radius: 5px;
+//     align-self: center;
+//     background: #fff;
+//     width: 30rem;
+//     height: 30rem;
+//     cursor: default;
+//     overflow-y: auto;
+//     svg {
+//       width: 20px;
+//       stroke: $pblue-mid;
+//       stroke-width: 3;
+//       transition: all 0.1s ease-in-out;
+//       &:hover {
+//         stroke: $pblue;
+//       }
+//     }
 
-    .close-button {
-      cursor: pointer;
-      position: absolute;
-      right: 1rem;
-    }
+//     .close-button {
+//       cursor: pointer;
+//       position: absolute;
+//       right: 1rem;
+//     }
 
-    h1 {
-      color: $pblue;
-    }
+//     h1 {
+//       color: $pblue;
+//     }
 
-    h5,
-    h3 {
-      margin: 0;
-      font-weight: 900;
-    }
+//     h5,
+//     h3 {
+//       margin: 0;
+//       font-weight: 900;
+//     }
 
-    h3 {
-      margin-bottom: 0.5rem;
-      color: $pblue;
-    }
+//     h3 {
+//       margin-bottom: 0.5rem;
+//       color: $pblue;
+//     }
 
-    h5 {
-      color: $pblue-mid;
-    }
+//     h5 {
+//       color: $pblue-mid;
+//     }
 
-    .meta {
-      display: flex;
-      flex-direction: column;
-      flex-wrap: wrap;
-      height: 10rem;
-      & > * {
-        width: 10rem;
-      }
+//     .meta {
+//       display: flex;
+//       flex-direction: column;
+//       flex-wrap: wrap;
+//       height: 10rem;
+//       & > * {
+//         width: 10rem;
+//       }
 
-      h3.contracted-from {
-        text-decoration: underline;
-        text-decoration-style: dotted;
-        cursor: pointer;
-        transition: all 0.1s ease-in-out;
-        width: 2rem;
-        &:hover {
-          background: $pblue-light;
-        }
-      }
-    }
+//       h3.contracted-from {
+//         text-decoration: underline;
+//         text-decoration-style: dotted;
+//         cursor: pointer;
+//         transition: all 0.1s ease-in-out;
+//         width: 2rem;
+//         &:hover {
+//           background: $pblue-light;
+//         }
+//       }
+//     }
 
-    .modal-top {
-      display: flex;
-      flex-direction: row;
-      & > {
-        align-self: center;
-      }
-    }
+//     .modal-top {
+//       display: flex;
+//       flex-direction: row;
+//       & > {
+//         align-self: center;
+//       }
+//     }
 
-    .notes {
-      width: 10rem;
-      margin-top: 2rem;
-      margin-bottom: 2rem;
-    }
+//     .notes {
+//       width: 10rem;
+//       margin-top: 2rem;
+//       margin-bottom: 2rem;
+//     }
 
-    .link {
-      margin: 0;
-      margin-top: 0.25rem;
-      margin-bottom: 0.5rem;
-      a {
-        color: $pblue;
-        background: $pblue-light;
-        transition: background 0.2s ease-in-out;
-        &:hover {
-          background: $pblue-hover;
-        }
-      }
-    }
-  }
-}
+//     .link {
+//       margin: 0;
+//       margin-top: 0.25rem;
+//       margin-bottom: 0.5rem;
+//       a {
+//         color: $pblue;
+//         background: $pblue-light;
+//         transition: background 0.2s ease-in-out;
+//         &:hover {
+//           background: $pblue-hover;
+//         }
+//       }
+//     }
+//   }
+// }
 
 .patients-summary {
   width: 30rem;
