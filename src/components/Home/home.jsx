@@ -8,11 +8,12 @@ import LogoutButton from "./logoutButton";
 import DetailView from "../Detail/detailView";
 
 const Home = () => {
-    let history = useHistory();
+  let history = useHistory();
 
-    useEffect(() => {
-      history.push("/inbox");
-    }, []);
+  useEffect(() => {
+    history.push("/inbox");
+    //eslint-disable-next-line
+  }, []);
 
   return (
     <React.Fragment>

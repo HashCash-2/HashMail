@@ -23,6 +23,7 @@ const DetailView = ({ match }) => {
       })[0];
       setMail(email);
     }
+    //eslint-disable-next-line
   }, []);
 
   return (
@@ -34,7 +35,7 @@ const DetailView = ({ match }) => {
         <br />
         <br />
         <br />
-        <ReplyEmailButton mail={mail.from} />
+        {box === "inbox" ? <ReplyEmailButton mail={mail.from} /> : null}
       </div>
     </div>
   );

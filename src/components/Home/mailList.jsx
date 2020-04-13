@@ -18,6 +18,7 @@ const MailList = (props) => {
     return () => {
       setMails([]);
     };
+    //eslint-disable-next-line
   }, [whichBox]);
 
   return (
