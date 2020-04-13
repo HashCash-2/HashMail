@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
 import EachMail from "./eachMail";
 import { useStoreState } from "easy-peasy";
+import Axios from 'axios'
+import setAuthToken from '../../utils/setAuthToken'
+import {URL} from '../../globalvariables';
+
 
 const MailList = (props) => {
   const whichBox = props.whichBox;
@@ -8,28 +12,43 @@ const MailList = (props) => {
   const outbox = useStoreState((state) => state.emails.sent);
 
   const [mails, setMails] = useState([]);
+  const [mailobj,setMailobj] = useState([])
+  const [loading,setLoading] = useState(true)
 
   useEffect(() => {
     if (whichBox === "inbox") {
-      setMails(inbox);
+      Axios.defaults.headers.common['Authorization'] = localStorage.getItem('HCtoken');
+      Axios.get(`${URL}/api/email/inbox`).then(data => {
+        console.log(data.data.emails);
+        setMailobj(data.data.emails);
+        setLoading(false)
+      })
+      // setMails(inbox);
     } else if (whichBox === "outbox") {
-      setMails(outbox);
+      Axios.defaults.headers.common['Authorization'] = localStorage.getItem('HCtoken');
+      Axios.get(`${URL}/api/email/read`).then(data => {
+        console.log(data);
+        setMailobj(data.data.emails);
+        setLoading(false)
+      })
+      // setMails(outbox);
     }
     return () => {
       setMails([]);
+      setMailobj([])
     };
     //eslint-disable-next-line
   }, [whichBox]);
 
   return (
     <div className="updates">
-      {mails.map((mail, index) => {
+      {loading?null:mailobj.map((mail, index) => {
         return (
           <EachMail
             key={index}
             index={index}
             box={whichBox}
-            id={mail.id}
+            id={mail._id}
             date={mail.date}
             sender={mail.from}
             subject={mail.subject}

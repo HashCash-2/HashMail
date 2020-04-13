@@ -25,9 +25,9 @@ const ComposeMail = (props) => {
       obj.receiver_email = email
       obj.sender_email="random@gmail.com"
       obj.subject = subject
-      obj.text = " "
+      obj.text = body
       obj.hashKey = hashkey
-      obj.html = body
+      obj.html = " "
       console.log("body", email, subject, body, hashkey, obj);
       Axios.defaults.headers.common['Authorization'] = localStorage.getItem('HCtoken');
       Axios.post(`${URL}/api/email/send`,obj).then(data => {
