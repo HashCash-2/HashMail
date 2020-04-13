@@ -11,7 +11,12 @@ const Home = () => {
   let history = useHistory();
 
   useEffect(() => {
-    history.push("/inbox");
+    if(!localStorage.getItem('HCtoken'))
+    {
+      history.push("/login")
+    }else{
+      history.push("/inbox");
+    }
     //eslint-disable-next-line
   }, []);
 

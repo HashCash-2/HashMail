@@ -1,17 +1,20 @@
 import React, { useState } from "react";
 import CustomHeader from "../Common/customHeader";
 import { Form, Button } from "semantic-ui-react";
-import { useHistory } from "react-router-dom";
+// import { useHistory } from "react-router-dom";
 import swal from "sweetalert";
+import Axios from 'axios'
+import {URL} from '../../globalvariables';
 
 const SignUpBox = () => {
+
   const [fname, setFname] = useState("");
   const [lname, setLname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
-  let history = useHistory();
+  // let history = useHistory();
 
   const handleSubmit = async () => {
     if (email.match(`[a-zA-Z0-9._-]+@[a-z]+.(com|in|net|org|edu)`) === null) {
@@ -28,22 +31,33 @@ const SignUpBox = () => {
       );
     } else {
       setLoading(true);
+      let obj={}
+      obj.name = fname + " " + lname
+      obj.email = email
+      obj.password = password
       //   const response = await login(email, password);
-      console.log("signup", fname, lname, email, password);
-      setLoading(false);
-      //   if (response.status === 200) {
-      //     setToken(response.data.token);
-      //     history.push("/");
-      //   } else if (
-      //     response.status === 400 &&
-      //     response.data.non_field_errors[0] ===
-      //       "Unable to log in with provided credentials."
-      //   ) {
-      //     swal("Error", "Email or Password seems incorrect!", "error");
-      //   } else {
-      //     swal("Oops!", "Something went wrong! Please Retry", "error");
-      //   }
-      history.push("/inbox");
+      console.log("signup", obj);
+     
+      Axios.post(`${URL}/user/register`,obj).then(data => {
+        console.log(data);        
+        if(data.data.message === "success"){
+          setLoading(false);
+          swal(
+            "Success",
+            "Account created",
+            "success"
+          )
+        }
+      }).catch(error => {
+        // var err = error.response.data;
+        console.log(error.response.data);
+        setLoading(false);
+        swal(
+          "Error",
+          "email already existing",
+          "error"
+        );
+      })
     }
   };
 

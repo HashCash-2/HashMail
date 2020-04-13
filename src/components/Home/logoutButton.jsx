@@ -8,7 +8,10 @@ const LogoutButton = () => {
     <div
       className="fadeInUp button is-purple"
       style={{ animationDelay: "1s" }}
-      onClick={() => history.push("/login")}
+      onClick={() => {
+        localStorage.removeItem("HCtoken")
+        history.push("/login")
+      }}
     >
       <LogOut />
       <span>Logout</span>
