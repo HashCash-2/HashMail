@@ -44,7 +44,6 @@ const LoginBox = () => {
           history.push("/inbox");
         }
       }).catch(error => {
-        // var err = error.response.data;
         console.log(error.response.data);
         setLoading(false);
         swal(
