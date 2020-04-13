@@ -1,39 +1,54 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { Database } from "react-feather";
 import { Modal, Form, Button } from "semantic-ui-react";
 import swal from "sweetalert";
+import Axios from 'axios';
+import {URL} from '../../globalvariables'
+
 
 const AddTokenButton = () => {
   const [token, setToken] = useState("");
   const [address, setAddress] = useState("");
   const [loading, setLoading] = useState(false);
+  const [tokens,setTokens] = useState([])
+
+  useEffect(() => {
+    Axios.defaults.headers.common["Authorization"] = localStorage.getItem(
+      "HCtoken"
+    );
+    Axios.get(`${URL}/api/token/add/user`).then(data => {
+        setTokens(data.data.data.tokens)      
+    })
+  },[])
+
 
   const handleSubmit = async () => {
     setLoading(true);
     console.log(token, address);
-    //   //   const response = await login(email, password);
-    //   let obj = {};
-    //   obj.receiver_email = email;
-    //   obj.sender_email = "random@gmail.com";
-    //   obj.subject = subject;
-    //   obj.text = body;
-    //   obj.hashKey = hashkey;
-    //   obj.html = " ";
-    //   console.log("body", email, subject, body, hashkey, obj);
-    //   Axios.defaults.headers.common["Authorization"] = localStorage.getItem(
-    //     "HCtoken"
-    //   );
-    //   Axios.post(`${URL}/api/email/send`, obj)
-    //     .then(data => {
-    //       console.log(data);
+    
+    let obj={
+      name:token,
+      address:address
+    }
+    tokens.push(obj);
+    let Data={}
+    Data.tokens = tokens
+    console.log(Data)
 
-    //       window.location.reload();
-    //     })
-    //     .catch(error => {
-    //       setLoading(false);
+      Axios.defaults.headers.common["Authorization"] = localStorage.getItem(
+        "HCtoken"
+      );
 
-    //       swal("Error", "Couldnt send email right now", "error");
-    //     });
+      Axios.post(`${URL}/api/token/add/user`, Data)
+        .then(data => {
+          console.log(data);
+          window.location.reload();
+        })
+        .catch(error => {
+          setLoading(false);
+
+          swal("Error", "Couldnt send email right now", "error");
+        });
     setLoading(false);
   };
 
