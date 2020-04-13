@@ -33,7 +33,7 @@ const Home = () => {
           <NewEmailButton />
 
           <h5 className="fadeInUp" style={{ animationDelay: "1.2s" }}>
-            Current Accepting:
+            Currently Accepting:
           </h5>
           <MyTokens />
           <AddTokenButton />

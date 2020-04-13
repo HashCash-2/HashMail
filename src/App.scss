@@ -845,13 +845,22 @@ h6 {
   width: 15.5rem;
 }
 
-.excel {
+.orange-button {
   color: $cherry;
   background: $orange-light-opaque;
   justify-content: center;
 
   &:hover {
     background: $orange-hover;
+  }
+}
+
+.excel {
+  color: #33a667;
+  background: #33a66730;
+
+  &:hover {
+    background: #33a66750;
   }
 }
 

@@ -42,7 +42,7 @@ const AddTokenButton = () => {
       centered={false}
       trigger={
         <div
-          className="fadeInUp button excel"
+          className="fadeInUp button orange-button"
           style={{ animationDelay: "1.3s" }}
         >
           <Database />
