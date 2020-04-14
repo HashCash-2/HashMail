@@ -36,6 +36,10 @@ const ComposeMail = props => {
   }, [amount, expiry, selectedTokenAddress]);
 
   const approveToken = async () => {
+    var account = await window.ethereum.enable();
+    console.log("web3", web3Instance);
+
+    await ApproveTokens(web3Instance, account[0], amount, selectedTokenAddress);
     setAttachActive(true);
   };
 
@@ -101,14 +105,7 @@ const ComposeMail = props => {
       );
     } else {
       setLoading(true);
-      var account = await window.ethereum.enable();
-      console.log("web3", web3Instance);
-      await ApproveTokens(
-        web3Instance,
-        account[0],
-        amount,
-        selectedTokenAddress
-      );
+
       //   const response = await login(email, password);
       let obj = {};
       obj.receiver_email = email;
