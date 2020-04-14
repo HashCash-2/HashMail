@@ -21,8 +21,9 @@ const ComposeMail = props => {
 
   const [tokens, setTokens] = useState([]);
 
-  const [sendActive, setSendActive] = useState(false);
+  const [attachActive, setAttachActive] = useState(false);
   const [signActive, setSignActive] = useState(false);
+  const [sendActive, setSendActive] = useState(false);
   const [tokenVisible, setTokenVisible] = useState(false);
 
   const [loading, setLoading] = useState(false);
@@ -33,6 +34,10 @@ const ComposeMail = props => {
       setSignActive(true);
     }
   }, [amount, expiry, selectedTokenAddress]);
+
+  const approveToken = async () => {
+    setAttachActive(true);
+  };
 
   const fetchTokens = async () => {
     if (email) {
@@ -79,19 +84,6 @@ const ComposeMail = props => {
         "error"
       );
     }
-
-    // setTokens([
-    //   {
-    //     key: "DAI",
-    //     text: "DAI",
-    //     value: "0x8f51a68052a3e1d56d145092da42ba13b02146bb"
-    //   },
-    //   {
-    //     key: "ETH",
-    //     text: "ETH",
-    //     value: "0x7e101aafe2a3e1d56d145092da42ba13b02146bb"
-    //   }
-    // ]);
   };
 
   const handleSign = () => {
@@ -180,9 +172,19 @@ const ComposeMail = props => {
             onChange={e => setBody(e.target.value)}
           />
         </Form.Field>
+
         <Form.Field>
-          <Button color="linkedin" onClick={fetchTokens}>
-            Fetch Tokens
+          <Button color="yellow" onClick={approveToken}>
+            1. Approve Token
+          </Button>
+
+          <Button
+            color="linkedin"
+            floated="right"
+            onClick={fetchTokens}
+            disabled={!attachActive}
+          >
+            2. Attach Stream
           </Button>
         </Form.Field>
         <br />
@@ -247,7 +249,7 @@ const ComposeMail = props => {
           loading={loading}
           disabled={!signActive}
         >
-          Sign Txn
+          3. Sign Txn
         </Button>
         <Button
           color="google plus"
@@ -256,7 +258,7 @@ const ComposeMail = props => {
           loading={loading}
           disabled={!sendActive}
         >
-          Send Mail
+          4. Send Mail
         </Button>
         <p>{streamId}</p>
       </Form>
