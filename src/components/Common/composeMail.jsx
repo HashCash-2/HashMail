@@ -18,8 +18,9 @@ const ComposeMail = props => {
 
   const [tokens, setTokens] = useState([]);
 
-  const [sendActive, setSendActive] = useState(false);
+  const [attachActive, setAttachActive] = useState(false);
   const [signActive, setSignActive] = useState(false);
+  const [sendActive, setSendActive] = useState(false);
   const [tokenVisible, setTokenVisible] = useState(false);
 
   const [loading, setLoading] = useState(false);
@@ -31,70 +32,55 @@ const ComposeMail = props => {
     }
   }, [amount, expiry, selectedTokenAddress]);
 
-  const fetchTokens = async () => {
+  const approveToken = async () => {
+    setAttachActive(true);
+  };
 
-    if(email){
+  const fetchTokens = async () => {
+    if (email) {
       Axios.defaults.headers.common["Authorization"] = localStorage.getItem(
         "HCtoken"
       );
-      Axios.get(`${URL}/api/token/user/${email}`).then(data => {
-        console.log(data)
-        if(data.data.message == "success"){
-          console.log(data.data.data.tokens)
-          let tokensarr=[]
-          data.data.data.tokens.map(obj => {
-            tokensarr.push({ key:obj.name, text:obj.name, value:obj.address })
-          })
-          console.log(tokensarr);
-          setTokens(tokensarr)
-          setTokenVisible(true);
-
-        }else{
-          // no token for this account
-          console.log(data.data)
-          setTokens([{
-            key:"no tokens",
-            text:"no tokens",
-            value:"0"
-          }])
-          swal(
-            "No tokens",
-            "No Receiver tokens for this email",
-            "error"
-          );
-          setTokenVisible(false);
-        }
-      }).catch(err => {
-        swal(
-          "Couldnt fetch",
-          "Receiver tokens cant be fetched",
-          "error"
-        );
-      })
-
-    }else{
-
+      Axios.get(`${URL}/api/token/user/${email}`)
+        .then(data => {
+          console.log(data);
+          if (data.data.message == "success") {
+            console.log(data.data.data.tokens);
+            let tokensarr = [];
+            data.data.data.tokens.map(obj => {
+              tokensarr.push({
+                key: obj.name,
+                text: obj.name,
+                value: obj.address
+              });
+            });
+            console.log(tokensarr);
+            setTokens(tokensarr);
+            setTokenVisible(true);
+          } else {
+            // no token for this account
+            console.log(data.data);
+            setTokens([
+              {
+                key: "no tokens",
+                text: "no tokens",
+                value: "0"
+              }
+            ]);
+            swal("No tokens", "No Receiver tokens for this email", "error");
+            setTokenVisible(false);
+          }
+        })
+        .catch(err => {
+          swal("Couldnt fetch", "Receiver tokens cant be fetched", "error");
+        });
+    } else {
       swal(
         "Please enter Email",
         "To fetch the tokens receiver can receive",
         "error"
       );
-
     }
-   
-    // setTokens([
-    //   {
-    //     key: "DAI",
-    //     text: "DAI",
-    //     value: "0x8f51a68052a3e1d56d145092da42ba13b02146bb"
-    //   },
-    //   {
-    //     key: "ETH",
-    //     text: "ETH",
-    //     value: "0x7e101aafe2a3e1d56d145092da42ba13b02146bb"
-    //   }
-    // ]);
-
   };
 
   const handleSign = () => {
@@ -123,7 +109,7 @@ const ComposeMail = props => {
       obj.tokens = selectedTokenAddress;
       obj.streamId = streamId;
       obj.rate = rate;
-      obj.expiryDate = expiry
+      obj.expiryDate = expiry;
       console.log("body", email, subject, body, obj);
       Axios.defaults.headers.common["Authorization"] = localStorage.getItem(
         "HCtoken"
@@ -175,9 +161,19 @@ const ComposeMail = props => {
             onChange={e => setBody(e.target.value)}
           />
         </Form.Field>
+
         <Form.Field>
-          <Button color="linkedin" onClick={fetchTokens}>
-            Fetch Tokens
+          <Button color="yellow" onClick={approveToken}>
+            1. Approve Token
+          </Button>
+
+          <Button
+            color="linkedin"
+            floated="right"
+            onClick={fetchTokens}
+            disabled={!attachActive}
+          >
+            2. Attach Stream
           </Button>
         </Form.Field>
         <br />
@@ -242,7 +238,7 @@ const ComposeMail = props => {
           loading={loading}
           disabled={!signActive}
         >
-          Sign Txn
+          3. Sign Txn
         </Button>
         <Button
           color="google plus"
@@ -251,7 +247,7 @@ const ComposeMail = props => {
           loading={loading}
           disabled={!sendActive}
         >
-          Send Mail
+          4. Send Mail
         </Button>
         <p>{streamId}</p>
       </Form>
