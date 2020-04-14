@@ -3,10 +3,12 @@ import CustomHeader from "../Common/customHeader";
 import { Form, Button } from "semantic-ui-react";
 import swal from "sweetalert";
 import { useHistory } from "react-router-dom";
-import Axios from 'axios'
-import setAuthToken from '../../utils/setAuthToken'
-import {URL} from '../../globalvariables';
+import Axios from "axios";
+import setAuthToken from "../../utils/setAuthToken";
+import { URL } from "../../globalvariables";
+import Web3 from "web3";
 
+var web3Instance = new Web3();
 const LoginBox = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -29,29 +31,27 @@ const LoginBox = () => {
       );
     } else {
       setLoading(true);
-      let obj={}
-      obj.email = email
-      obj.password = password
+      let obj = {};
+      obj.email = email;
+      obj.password = password;
+      await window.ethereum.enable();
       console.log("login", obj);
-
-      Axios.post(`${URL}/user/login`,obj).then(data => {
-        console.log(data);        
-        if(data.data.success === true){
+      Axios.post(`${URL}/user/login`, obj)
+        .then(data => {
+          console.log(data);
+          if (data.data.success === true) {
+            setLoading(false);
+            const { token } = data.data;
+            localStorage.setItem("HCtoken", token);
+            setAuthToken(token);
+            history.push("/inbox");
+          }
+        })
+        .catch(error => {
+          console.log(error.response.data);
           setLoading(false);
-          const {token} = data.data 
-          localStorage.setItem('HCtoken',token)
-          setAuthToken(token);
-          history.push("/inbox");
-        }
-      }).catch(error => {
-        console.log(error.response.data);
-        setLoading(false);
-        swal(
-          "Error",
-          "email or password incorrect",
-          "error"
-        );
-      })
+          swal("Error", "Email or password incorrect", "error");
+        });
     }
   };
 
@@ -63,7 +63,7 @@ const LoginBox = () => {
           <label>Email</label>
           <input
             type="email"
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={e => setEmail(e.target.value)}
             placeholder="eg : joe@gmail.com"
             name="username"
           />
@@ -72,7 +72,7 @@ const LoginBox = () => {
           <label>Password</label>
           <input
             type="password"
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={e => setPassword(e.target.value)}
             placeholder="Min. 8 Characters"
             name="password"
           />
