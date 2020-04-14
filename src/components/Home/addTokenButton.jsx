@@ -16,7 +16,7 @@ const AddTokenButton = () => {
     Axios.defaults.headers.common["Authorization"] = localStorage.getItem(
       "HCtoken"
     );
-    Axios.get(`${URL}/api/token/add/user`).then(data => {
+    Axios.get(`${URL}/api/token/user`).then(data => {
         setTokens(data.data.data.tokens)      
     })
   },[])
@@ -25,14 +25,21 @@ const AddTokenButton = () => {
   const handleSubmit = async () => {
     setLoading(true);
     console.log(token, address);
-    
+    let tkarr=[]
+    tokens.map(tk => {
+      tkarr.push({ name:tk.name, address:tk.address })
+    })
+
     let obj={
       name:token,
       address:address
     }
-    tokens.push(obj);
+
+    tkarr.push(obj)
+    console.log(tkarr)
+    // tokens.push(obj);
     let Data={}
-    Data.tokens = tokens
+    Data.tokens = tkarr
     console.log(Data)
 
       Axios.defaults.headers.common["Authorization"] = localStorage.getItem(
@@ -42,6 +49,7 @@ const AddTokenButton = () => {
       Axios.post(`${URL}/api/token/add/user`, Data)
         .then(data => {
           console.log(data);
+          setLoading(false);
           window.location.reload();
         })
         .catch(error => {
@@ -49,7 +57,7 @@ const AddTokenButton = () => {
 
           swal("Error", "Couldnt send email right now", "error");
         });
-    setLoading(false);
+    // setLoading(false);
   };
 
   return (
