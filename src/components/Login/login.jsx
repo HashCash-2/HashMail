@@ -1,18 +1,19 @@
-import React,{useEffect} from "react";
+import React, { useEffect, useState } from "react";
 import CustomHeader from "../Common/customHeader";
 import LoginBox from "./loginBox";
 import SignUpBox from "./signUpBox";
-import {  useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 const Login = () => {
   let history = useHistory();
 
-  useEffect(()=>{
-    if(localStorage.getItem("HCtoken")){
+  const [showSignUp, setShowSignUp] = useState(false);
+
+  useEffect(() => {
+    if (localStorage.getItem("HCtoken")) {
       history.push("/");
     }
-  })
-
+  });
 
   return (
     <React.Fragment>
@@ -33,10 +34,20 @@ const Login = () => {
         <div className="home-right">
           <div className="small-width">
             <LoginBox />
+            <a
+              className="fadeInUp"
+              style={{ cursor: "pointer", animationDelay: "1s" }}
+              onClick={() => {
+                setShowSignUp(true);
+              }}
+            >
+              Create Account
+            </a>
             <br />
             <br />
             <br />
-            <SignUpBox />
+
+            {showSignUp ? <SignUpBox /> : null}
           </div>
         </div>
       </div>
