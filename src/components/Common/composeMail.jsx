@@ -32,20 +32,72 @@ const ComposeMail = props => {
   }, [amount, expiry, selectedTokenAddress]);
 
   const fetchTokens = async () => {
-    setTokens([
-      {
-        key: "DAI",
-        text: "DAI",
-        value: "0x8f51a68052a3e1d56d145092da42ba13b02146bb"
-      },
-      {
-        key: "ETH",
-        text: "ETH",
-        value: "0x7e101aafe2a3e1d56d145092da42ba13b02146bb"
-      }
-    ]);
 
-    setTokenVisible(true);
+    if(email){
+      Axios.defaults.headers.common["Authorization"] = localStorage.getItem(
+        "HCtoken"
+      );
+      Axios.get(`${URL}/api/token/user/${email}`).then(data => {
+        // console.log(data)
+        if(data.data.message == "success"){
+          console.log(data.data.data.tokens)
+          let tokensarr=[]
+          data.data.data.tokens.map(obj => {
+            tokensarr.push({ key:obj.name, text:obj.name, value:obj.address })
+          })
+          console.log(tokensarr);
+          setTokens(tokensarr)
+          setTokenVisible(true);
+
+        }else{
+          // no token for this account
+          console.log(data.data)
+          setTokens([{
+            key:"no tokens",
+            text:"no tokens",
+            value:"0"
+          }])
+        }
+        swal(
+          "No tokens",
+          "No Receiver tokens for this email",
+          "error"
+        );
+        setTokenVisible(false);
+
+
+
+      }).catch(err => {
+        swal(
+          "Couldnt fetch",
+          "Receiver tokens cant be fetched",
+          "error"
+        );
+      })
+
+    }else{
+
+      swal(
+        "Please enter Email",
+        "To fetch the tokens receiver can receive",
+        "error"
+      );
+
+    }
+   
+    // setTokens([
+    //   {
+    //     key: "DAI",
+    //     text: "DAI",
+    //     value: "0x8f51a68052a3e1d56d145092da42ba13b02146bb"
+    //   },
+    //   {
+    //     key: "ETH",
+    //     text: "ETH",
+    //     value: "0x7e101aafe2a3e1d56d145092da42ba13b02146bb"
+    //   }
+    // ]);
+
   };
 
   const handleSign = () => {
@@ -70,6 +122,11 @@ const ComposeMail = props => {
       obj.subject = subject;
       obj.text = body;
       obj.html = " ";
+      obj.amount = amount;
+      obj.tokens = selectedTokenAddress;
+      obj.streamId = streamId;
+      obj.rate = rate;
+      obj.expiryDate = expiry
       console.log("body", email, subject, body, obj);
       Axios.defaults.headers.common["Authorization"] = localStorage.getItem(
         "HCtoken"
