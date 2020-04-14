@@ -55,7 +55,7 @@ const AddTokenButton = () => {
         .catch(error => {
           setLoading(false);
 
-          swal("Error", "Couldnt send email right now", "error");
+          swal("Error", "Couldnt add token right now", "error");
         });
     // setLoading(false);
   };

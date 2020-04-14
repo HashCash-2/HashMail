@@ -12,6 +12,7 @@
     "ethers": "^4.0.46",
     "node-sass": "^4.13.1",
     "react": "^16.13.1",
+    "react-countdown-now": "^2.1.2",
     "react-dom": "^16.13.1",
     "react-feather": "^2.0.4",
     "react-router-dom": "^5.1.2",

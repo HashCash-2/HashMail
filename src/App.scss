@@ -656,6 +656,23 @@ h6 {
   }
 }
 
+.percentage {
+  margin-left: 20px;
+  h4 {
+    padding: 0;
+    margin: 0;
+  }
+}
+
+.slider-div {
+  display: flex;
+}
+
+.slider-label {
+  margin: 0 5px;
+  padding: 0;
+}
+
 .Navbar {
   display: flex;
   flex-direction: row;

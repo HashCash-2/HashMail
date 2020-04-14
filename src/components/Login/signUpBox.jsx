@@ -3,11 +3,10 @@ import CustomHeader from "../Common/customHeader";
 import { Form, Button } from "semantic-ui-react";
 // import { useHistory } from "react-router-dom";
 import swal from "sweetalert";
-import Axios from 'axios'
-import {URL} from '../../globalvariables';
+import Axios from "axios";
+import { URL } from "../../globalvariables";
 
 const SignUpBox = () => {
-
   const [fname, setFname] = useState("");
   const [lname, setLname] = useState("");
   const [email, setEmail] = useState("");
@@ -31,39 +30,33 @@ const SignUpBox = () => {
       );
     } else {
       setLoading(true);
-      let obj={}
-      obj.name = fname + " " + lname
-      obj.email = email
-      obj.password = password
+      let obj = {};
+      obj.name = fname + " " + lname;
+      obj.email = email;
+      obj.password = password;
       //   const response = await login(email, password);
       console.log("signup", obj);
-     
-      Axios.post(`${URL}/user/register`,obj).then(data => {
-        console.log(data);        
-        if(data.data.message === "success"){
+
+      Axios.post(`${URL}/user/register`, obj)
+        .then(data => {
+          console.log(data);
+          if (data.data.message === "success") {
+            setLoading(false);
+            swal("Success", "Account created", "success");
+          }
+        })
+        .catch(error => {
+          // var err = error.response.data;
+          console.log(error.response.data);
           setLoading(false);
-          swal(
-            "Success",
-            "Account created",
-            "success"
-          )
-        }
-      }).catch(error => {
-        // var err = error.response.data;
-        console.log(error.response.data);
-        setLoading(false);
-        swal(
-          "Error",
-          "email already existing",
-          "error"
-        );
-      })
+          swal("Error", "email already existing", "error");
+        });
     }
   };
 
   return (
     <div className="sign-up">
-      <CustomHeader title={"or Sign-Up"} />
+      <CustomHeader title={"Sign-Up"} />
 
       <Form className="fadeInUp" style={{ animationDelay: "0.8s" }}>
         <Form.Group widths="equal">
@@ -71,13 +64,13 @@ const SignUpBox = () => {
             fluid
             label="First name"
             placeholder="First name"
-            onChange={(e) => setFname(e.target.value)}
+            onChange={e => setFname(e.target.value)}
           />
           <Form.Input
             fluid
             label="Last name"
             placeholder="Last name"
-            onChange={(e) => setLname(e.target.value)}
+            onChange={e => setLname(e.target.value)}
           />
         </Form.Group>
         <Form.Field>
@@ -86,7 +79,7 @@ const SignUpBox = () => {
             type="email"
             placeholder="eg : joe@gmail.com"
             name="username"
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={e => setEmail(e.target.value)}
           />
         </Form.Field>
         <Form.Field>
@@ -95,7 +88,7 @@ const SignUpBox = () => {
             type="password"
             placeholder="Min. 8 Characters"
             name="password"
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={e => setPassword(e.target.value)}
           />
         </Form.Field>
         <Button
