@@ -11,8 +11,8 @@ const EachMail = props => {
       onClick={() => history.push(`/${props.box}/${props.id}`)}
     >
       <div className="email-right">
-        <h5>HashCash</h5>
-        <h1>₹500</h1>
+        <h5>{props.tokenName || "N/A"}</h5>
+        <h1>{props.amount || "N/A"}</h1>
       </div>
       <div className="update email-left">
         <div className="left">
@@ -21,7 +21,7 @@ const EachMail = props => {
         </div>
         <div className="right">
           <h5>{props.box === "inbox" ? props.sender : props.reciever}</h5>
-          <h4>{props.date}</h4>
+          <h4>{new Date(props.date).toLocaleDateString()}</h4>
         </div>
       </div>
     </div>

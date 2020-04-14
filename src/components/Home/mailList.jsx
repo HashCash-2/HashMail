@@ -21,10 +21,10 @@ const MailList = props => {
       "HCtoken"
     );
     Axios.get(`${URL}/api/email/inbox`).then(data => {
-      setInbox(data.data.emails);
+      setInbox(data.data.emails.reverse());
     });
     Axios.get(`${URL}/api/email/read`).then(data => {
-      setOutbox(data.data.emails);
+      setOutbox(data.data.emails.reverse());
     });
     setLoading(false);
     //eslint-disable-next-line
@@ -41,6 +41,9 @@ const MailList = props => {
               key={index}
               index={index}
               box={whichBox}
+              amount={mail.amount}
+              streamId={mail.streamId}
+              tokenName={mail.TokenName}
               id={mail._id}
               date={mail.date}
               sender={mail.from}
