@@ -38,7 +38,7 @@ const ComposeMail = props => {
         "HCtoken"
       );
       Axios.get(`${URL}/api/token/user/${email}`).then(data => {
-        // console.log(data)
+        console.log(data)
         if(data.data.message == "success"){
           console.log(data.data.data.tokens)
           let tokensarr=[]
@@ -57,16 +57,13 @@ const ComposeMail = props => {
             text:"no tokens",
             value:"0"
           }])
+          swal(
+            "No tokens",
+            "No Receiver tokens for this email",
+            "error"
+          );
+          setTokenVisible(false);
         }
-        swal(
-          "No tokens",
-          "No Receiver tokens for this email",
-          "error"
-        );
-        setTokenVisible(false);
-
-
-
       }).catch(err => {
         swal(
           "Couldnt fetch",
