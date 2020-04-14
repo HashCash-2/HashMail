@@ -2,6 +2,7 @@ import { ethers } from "ethers";
 import Web3 from "web3";
 
 var HashCashContractAddr = "0xd7c5542ad8C14D4a9052edB95bdF0c7647755dbc";
+
 const TokenABI = [
   {
     anonymous: false,
@@ -597,14 +598,32 @@ const HashCashContract = [
 
 async function GetHashCashContract(web3) {
   web3 = new Web3(web3.givenProvider);
-  let contract = new web3.eth.Contract(TokenABI, HashCashContractAddr);
+  let contract = new web3.eth.Contract(TokenABI, HashCashContractAddr, {
+    transactionConfirmationBlocks: 1
+  });
   return contract;
 }
 async function GetTokenContract(web3, tokenAddress) {
   web3 = new Web3(web3.givenProvider);
-  let contract = new web3.eth.Contract(TokenABI, tokenAddress);
+  let contract = new web3.eth.Contract(TokenABI, tokenAddress, {
+    transactionConfirmationBlocks: 1
+  });
   return contract;
 }
+
+async function ApproveTokens(web3, account, amount, tokenAddress) {
+  var userAddr = account;
+  var tokenContract = await GetTokenContract(web3, tokenAddress);
+  console.log(
+    "balance of account",
+    await tokenContract.methods.balanceOf(account).call()
+  );
+  await tokenContract.methods
+    .approve(userAddr, ethers.utils.parseEther(amount))
+    .send({ from: userAddr, gasPrice: 0 });
+  return;
+}
+
 async function StartReverseStream(
   web3,
   account,
@@ -612,26 +631,44 @@ async function StartReverseStream(
   stopTime,
   tokenAddress
 ) {
+  // get hash cash contract instance
   var HashCashContract = await GethashCashContract(web3);
-  await ApproveTokens(web3, account, deposit, tokenAddress);
-  await HashCashContract.methods.createReverseStream(
-    ethers.utils.parseEther(deposit),
-    tokenAddress,
-    stopTime
-  );
+
+  try {
+    // approve tokens
+    await ApproveTokens(web3, account, deposit, tokenAddress);
+  } catch (e) {
+    console.log("error while approving tokens", e);
+    return 0, e;
+  }
+
+  try {
+    // create reverse stream
+    var streamID = await HashCashContract.methods.createReverseStream(
+      ethers.utils.parseEther(deposit),
+      tokenAddress,
+      stopTime
+    );
+    console.log("Tx was a success", streamID);
+    return streamID, null;
+  } catch (e) {
+    console.log("error while createing reverse stream", e);
+    return 0, e;
+  }
 }
 
-async function ApproveTokens(web3, account, amount, tokenAddress) {
-  var userAddr = account;
-  var tokenContract = await GetTokenContract(web3, tokenAddress);
-  console.log(
-    "balanceOf",
-    await tokenContract.methods.balanceOf(account).call()
-  );
-  await tokenContract.methods
-    .approve(userAddr, ethers.utils.parseEther("1000000000"))
-    .send({ from: userAddr, gasPrice: 0 });
-  return;
-}
+// Closes stream on the hash cash contract
+// Will always return an error or null -> so make sure you check that
 
-export default ApproveTokens;
+async function CloseStream(web3, streamID) {
+  var HashCashContract = await GethashCashContract(web3);
+  try {
+    // create reverse stream
+    var streamID = await HashCashContract.methods.close(streamID);
+    return null;
+  } catch (e) {
+    console.log("error while closing stream", e);
+    return e;
+  }
+}
+export default StartReverseStream;
