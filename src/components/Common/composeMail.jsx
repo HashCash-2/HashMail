@@ -5,7 +5,7 @@ import Axios from "axios";
 import { URL } from "../../globalvariables";
 import { formatDate } from "../../utils/helpers";
 import Web3 from "web3";
-import { ApproveTokens } from "../../utils/contractInteractions";
+import ApproveTokens from "../../utils/contractInteractions";
 var web3Instance = new Web3();
 
 const ComposeMail = props => {
