@@ -35,6 +35,7 @@ const LoginBox = () => {
       obj.email = email;
       obj.password = password;
       await window.ethereum.enable();
+
       console.log("login", obj);
       Axios.post(`${URL}/user/login`, obj)
         .then(data => {

@@ -618,9 +618,13 @@ async function ApproveTokens(web3, account, amount, tokenAddress) {
     "balance of account",
     await tokenContract.methods.balanceOf(account).call()
   );
-  await tokenContract.methods
-    .approve(userAddr, ethers.utils.parseEther(amount))
-    .send({ from: userAddr, gasPrice: 0 });
+  try {
+    await tokenContract.methods
+      .approve(userAddr, ethers.utils.parseEther(amount))
+      .send({ from: userAddr, gasPrice: 0 });
+  } catch (e) {
+    console.log("error while approving", e);
+  }
   return;
 }
 
@@ -629,23 +633,9 @@ async function ApproveTokens(web3, account, amount, tokenAddress) {
 // 2. Start the reverse stream
 // Metamask will open twice to do this
 // Will always return streamID and error. Error can be null
-async function StartReverseStream(
-  web3,
-  account,
-  deposit,
-  stopTime,
-  tokenAddress
-) {
+async function StartReverseStream(web3, deposit, stopTime, tokenAddress) {
   // get hash cash contract instance
   var HashCashContract = await GethashCashContract(web3);
-
-  try {
-    // approve tokens
-    await ApproveTokens(web3, account, deposit, tokenAddress);
-  } catch (e) {
-    console.log("error while approving tokens", e);
-    return 0, e;
-  }
 
   try {
     // create reverse stream
@@ -664,7 +654,7 @@ async function StartReverseStream(
 
 // Closes stream on the hash cash contract
 // Will always return an error or null -> so make sure you check that
-async function CloseStream(web3, streamID) {
+async function CloseStream(web3, streamID, burn, refund) {
   var HashCashContract = await GethashCashContract(web3);
   try {
     // create reverse stream
@@ -675,4 +665,4 @@ async function CloseStream(web3, streamID) {
     return e;
   }
 }
-export default StartReverseStream;
+export default ApproveTokens;
