@@ -42,7 +42,13 @@ const DetailView = ({ match }) => {
 
           <div className="mailbody fadeInUp" style={{ animationDelay: "0.7s" }}>
             <h3>
-              EMAIL VALUE : {mail.amount || "N/A"} {mail.TokenName || "N/A"}
+              Email Value :{" "}
+              <strong>
+                {mail.amount || "N/A"} {mail.TokenName || "N/A"}
+              </strong>
+              <br />
+              Expires :{" "}
+              <strong>{new Date(mail.expiryDate).toLocaleString()}</strong>
             </h3>
             <br />
             {mail.text}

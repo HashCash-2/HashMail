@@ -1,8 +1,27 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
+import Countdown from "react-countdown-now";
 
 const EachMail = props => {
   let history = useHistory();
+
+  // Random component
+  const Completionist = () => <span>Email Expired!</span>;
+
+  // Renderer callback with condition
+  const renderer = ({ days, hours, minutes, seconds, completed }) => {
+    if (completed) {
+      // Render a completed state
+      return <Completionist />;
+    } else {
+      // Render a countdown
+      return (
+        <span>
+          {days} days {hours} hours {minutes} minutes
+        </span>
+      );
+    }
+  };
 
   return (
     <div
@@ -21,7 +40,10 @@ const EachMail = props => {
         </div>
         <div className="right">
           <h5>{props.box === "inbox" ? props.sender : props.reciever}</h5>
-          <h4>{new Date(props.date).toLocaleDateString()}</h4>
+          <h4>
+            Expires in :{" "}
+            <Countdown date={new Date(props.expiry)} renderer={renderer} />
+          </h4>
         </div>
       </div>
     </div>

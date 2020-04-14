@@ -44,6 +44,7 @@ const MailList = props => {
               amount={mail.amount}
               streamId={mail.streamId}
               tokenName={mail.TokenName}
+              expiry={mail.expiryDate}
               id={mail._id}
               date={mail.date}
               sender={mail.from}
