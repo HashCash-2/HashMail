@@ -624,6 +624,11 @@ async function ApproveTokens(web3, account, amount, tokenAddress) {
   return;
 }
 
+// StartReverseStream tries to start the reverse stream
+// 1. Approve the deposit amount
+// 2. Start the reverse stream
+// Metamask will open twice to do this
+// Will always return streamID and error. Error can be null
 async function StartReverseStream(
   web3,
   account,
@@ -659,7 +664,6 @@ async function StartReverseStream(
 
 // Closes stream on the hash cash contract
 // Will always return an error or null -> so make sure you check that
-
 async function CloseStream(web3, streamID) {
   var HashCashContract = await GethashCashContract(web3);
   try {
