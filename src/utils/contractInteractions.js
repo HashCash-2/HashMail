@@ -603,6 +603,7 @@ async function GetHashCashContract(web3) {
   });
   return contract;
 }
+
 async function GetTokenContract(web3, tokenAddress) {
   web3 = new Web3(web3.givenProvider);
   let contract = new web3.eth.Contract(TokenABI, tokenAddress, {
@@ -635,7 +636,7 @@ async function ApproveTokens(web3, account, amount, tokenAddress) {
 // Will always return streamID and error. Error can be null
 async function StartReverseStream(web3, deposit, stopTime, tokenAddress) {
   // get hash cash contract instance
-  var HashCashContract = await GethashCashContract(web3);
+  var HashCashContract = await GetHashCashContract(web3);
 
   try {
     // create reverse stream
@@ -655,7 +656,7 @@ async function StartReverseStream(web3, deposit, stopTime, tokenAddress) {
 // Closes stream on the hash cash contract
 // Will always return an error or null -> so make sure you check that
 async function CloseStream(web3, streamID, burn, refund) {
-  var HashCashContract = await GethashCashContract(web3);
+  var HashCashContract = await GetHashCashContract(web3);
   try {
     // create reverse stream
     var streamID = await HashCashContract.methods.close(streamID);

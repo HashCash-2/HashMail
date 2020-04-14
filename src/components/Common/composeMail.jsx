@@ -109,11 +109,14 @@ const ComposeMail = props => {
       );
     } else {
       setLoading(true);
-      await window.ethereum.enable();
+      var account = await window.ethereum.enable();
       console.log("web3", web3Instance);
-      var accounts = await web3Instance.getAccounts();
-      console.log("first account", accounts[0]);
-      ApproveTokens(web3Instance, accounts[0], amount, selectedTokenAddress);
+      await ApproveTokens(
+        web3Instance,
+        account[0],
+        amount,
+        selectedTokenAddress
+      );
       //   const response = await login(email, password);
       let obj = {};
       obj.receiver_email = email;
