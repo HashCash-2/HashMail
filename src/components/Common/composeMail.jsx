@@ -149,7 +149,7 @@ const ComposeMail = props => {
         obj.streamId = streamID;
         obj.rate = rate;
         obj.expiryDate = expiry;
-        obj.TokenName = tokenName;
+        obj.tokenname = tokenName;
         //   console.log("body", email, subject, body, obj);
         Axios.defaults.headers.common["Authorization"] = localStorage.getItem(
           "HCtoken"

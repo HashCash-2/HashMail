@@ -21,10 +21,10 @@ const MailList = props => {
       "HCtoken"
     );
     Axios.get(`${URL}/api/email/inbox`).then(data => {
-      setInbox(data.data.emails.reverse());
+      setInbox(data.data.emails);
     });
     Axios.get(`${URL}/api/email/read`).then(data => {
-      setOutbox(data.data.emails.reverse());
+      setOutbox(data.data.emails);
     });
     setLoading(false);
     //eslint-disable-next-line
