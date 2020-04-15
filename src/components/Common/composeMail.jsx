@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Form, Button, TextArea } from "semantic-ui-react";
+import { Form, Button, TextArea, Icon } from "semantic-ui-react";
 import swal from "sweetalert";
 import Axios from "axios";
 import { URL } from "../../globalvariables";
 import { formatDate } from "../../utils/helpers";
 import Web3 from "web3";
 import * as contractInteraction from "../../utils/contractInteractions";
+import Stepper from "react-stepper-horizontal";
 var web3Instance = new Web3();
 
 const ComposeMail = props => {
@@ -20,45 +21,44 @@ const ComposeMail = props => {
   const [rate, setRate] = useState("");
 
   const [tokens, setTokens] = useState([]);
-
-  const [attachActive, setAttachActive] = useState(false);
-  const [signActive, setSignActive] = useState(false);
-  const [sendActive, setSendActive] = useState(false);
-  const [approveActive, setApproveActive] = useState(false);
-  const [tokenVisible, setTokenVisible] = useState(false);
+  const [activeStep, setActiveStep] = useState(1);
 
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     console.log(amount, expiry, selectedTokenAddress);
-    if (amount !== 0 && selectedTokenAddress !== "" && expiry !== "") {
-      setSendActive(true);
-      setApproveActive(true);
-    }
+    const adate = new Date(expiry);
+    const today = new Date();
+    const diffTime = Math.abs(adate - today);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    setRate(`${(amount / diffDays).toFixed(2)} tokens/day`);
   }, [amount, expiry, selectedTokenAddress]);
 
   const approveToken = async () => {
-    var account = await window.ethereum.enable();
-    await contractInteraction.ApproveTokens(
-      web3Instance,
-      account[0],
-      amount,
-      selectedTokenAddress
-    );
+    setLoading(true);
+    // var account = await window.ethereum.enable();
+    // await contractInteraction.ApproveTokens(
+    //   web3Instance,
+    //   account[0],
+    //   amount,
+    //   selectedTokenAddress
+    // );
 
-    const getUnixTimeUtc = (dateString = new Date()) =>
-      Math.round(new Date(dateString).getTime() / 1000);
-    var stopTime = getUnixTimeUtc + 3600;
-    await contractInteraction.StartReverseStream(
-      web3Instance,
-      amount,
-      stopTime,
-      selectedTokenAddress
-    );
-    setSignActive(true);
+    // const getUnixTimeUtc = (dateString = new Date()) =>
+    //   Math.round(new Date(dateString).getTime() / 1000);
+    // var stopTime = getUnixTimeUtc + 3600;
+    // await contractInteraction.StartReverseStream(
+    //   web3Instance,
+    //   amount,
+    //   stopTime,
+    //   selectedTokenAddress
+    // );
+    setActiveStep(3);
+    setLoading(false);
   };
 
   const fetchTokens = async () => {
+    setLoading(true);
     if (email) {
       Axios.defaults.headers.common["Authorization"] = localStorage.getItem(
         "HCtoken"
@@ -78,8 +78,8 @@ const ComposeMail = props => {
             });
             console.log(tokensarr);
             setTokens(tokensarr);
-            setTokenVisible(true);
-            setApproveActive(true);
+            setLoading(false);
+            setActiveStep(2);
           } else {
             // no token for this account
             console.log(data.data);
@@ -91,7 +91,6 @@ const ComposeMail = props => {
               }
             ]);
             swal("No tokens", "No Receiver tokens for this email", "error");
-            setTokenVisible(false);
           }
         })
         .catch(err => {
@@ -109,7 +108,6 @@ const ComposeMail = props => {
   const handleSign = () => {
     console.log("signed");
     setStreamId("0x8f51a68052a3e1d56d145092da42ba13b02146bb");
-    setSendActive(true);
   };
 
   const handleSubmit = async () => {
@@ -151,57 +149,86 @@ const ComposeMail = props => {
     }
   };
 
+  const goBack = () => {
+    console.log(email, body, subject);
+    if (activeStep === 2) {
+      setActiveStep(1);
+    } else if (activeStep === 3) {
+      setActiveStep(2);
+    }
+  };
+
   return (
     <React.Fragment>
       <div className="titles">
-        <h1>Compose HashMail</h1>
+        <h1>
+          {activeStep === 1 ? null : (
+            <Icon
+              name="arrow left"
+              onClick={() => goBack()}
+              style={{ cursor: "pointer" }}
+            />
+          )}
+          Compose HashMail
+        </h1>
+        <div>
+          <Stepper
+            steps={[
+              { title: "Write Email" },
+              { title: "Fetch Tokens" },
+              { title: "Approve and Send" }
+            ]}
+            activeStep={activeStep - 1}
+          />
+        </div>
         <br />
         <br />
       </div>
       <Form>
-        <Form.Field>
-          <label>Email</label>
-          <input
-            type="text"
-            onChange={e => setEmail(e.target.value)}
-            placeholder="eg : joe@gmail.com"
-            name="email"
-            disabled={props.mail ? true : false}
-            value={props.mail ? props.mail : email}
-          />
-        </Form.Field>
-        <Form.Field>
-          <label>Subject</label>
-          <input
-            type="text"
-            onChange={e => setSubject(e.target.value)}
-            name="subject"
-          />
-        </Form.Field>
-        <Form.Field>
-          <label>Body</label>
-          <TextArea
-            style={{ minHeight: 100 }}
-            onChange={e => setBody(e.target.value)}
-          />
-        </Form.Field>
+        {activeStep === 1 ? (
+          <>
+            <Form.Field>
+              <label>Email</label>
+              <input
+                type="text"
+                onChange={e => setEmail(e.target.value)}
+                placeholder="eg : joe@gmail.com"
+                name="email"
+                disabled={props.mail ? true : false}
+                value={props.mail ? props.mail : email}
+              />
+            </Form.Field>
+            <Form.Field>
+              <label>Subject</label>
+              <input
+                type="text"
+                onChange={e => setSubject(e.target.value)}
+                name="subject"
+                value={subject}
+              />
+            </Form.Field>
+            <Form.Field>
+              <label>Body</label>
+              <TextArea
+                style={{ minHeight: 100 }}
+                onChange={e => setBody(e.target.value)}
+                value={body}
+              />
+              <br />
+              <br />
+              <Button
+                color="linkedin"
+                onClick={fetchTokens}
+                floated="right"
+                loading={loading}
+              >
+                Continue
+              </Button>
+            </Form.Field>
+          </>
+        ) : null}
 
-        <Form.Field>
-          <Button color="linkedin" onClick={fetchTokens}>
-            1. Attach Stream
-          </Button>
-          <Button
-            color="yellow"
-            onClick={approveToken}
-            disabled={!approveActive}
-            floated="right"
-          >
-            2. Approve Token
-          </Button>
-        </Form.Field>
-        <br />
-
-        {tokenVisible ? (
+        {activeStep === 2 ? (
           <>
             <Form.Field>
               <Form.Group widths="equal">
@@ -211,12 +238,14 @@ const ComposeMail = props => {
                   options={tokens}
                   placeholder="Token"
                   onChange={(e, data) => setSelectedTokenAddress(data.value)}
+                  value={selectedTokenAddress}
                 />
                 <Form.Input
                   fluid
                   label="Amount"
                   placeholder="Amount"
                   onChange={e => setAmount(e.target.value)}
+                  value={amount}
                 />
                 <Form.Input
                   fluid
@@ -234,13 +263,6 @@ const ComposeMail = props => {
                       );
                     } else {
                       setExpiry(e.target.value);
-                      const adate = new Date(e.target.value);
-                      const today = new Date();
-                      const diffTime = Math.abs(adate - today);
-                      const diffDays = Math.ceil(
-                        diffTime / (1000 * 60 * 60 * 24)
-                      );
-                      setRate(`${(amount / diffDays).toFixed(2)} tokens/day`);
                     }
                   }}
                 />
@@ -250,30 +272,46 @@ const ComposeMail = props => {
                   {rate}
                 </Form.Field>
               </Form.Group>
+              <br />
+              <br />
+              <Form.Field>
+                <Button
+                  color="linkedin"
+                  onClick={approveToken}
+                  floated="right"
+                  loading={loading}
+                >
+                  Approve Token
+                </Button>
+              </Form.Field>
             </Form.Field>
           </>
         ) : null}
 
-        <br />
-        <Button
-          color="green"
-          onClick={handleSign}
-          loading={loading}
-          disabled={!signActive}
-        >
-          3. Sign Txn
-        </Button>
-        <Button
-          color="google plus"
-          floated="right"
-          onClick={handleSubmit}
-          loading={loading}
-          disabled={!sendActive}
-        >
-          4. Send Mail
-        </Button>
-        <p>{streamId}</p>
+        {activeStep === 3 ? (
+          <>
+            {/* <Button color="green" onClick={handleSign} loading={loading}>
+              3. Sign Txn
+            </Button> */}
+            {/* <p>{streamId}</p> */}
+            <h4>to: {email}</h4>
+            <h4>subject: {subject}</h4>
+            <p>{body}</p>
+            <br />
+            <h6>TOKEN ADDRESS: {selectedTokenAddress}</h6>
+            <Button
+              color="linkedin"
+              floated="right"
+              onClick={handleSubmit}
+              loading={loading}
+            >
+              Send Mail
+            </Button>
+          </>
+        ) : null}
       </Form>
+      <br />
+      <br />
       <br />
     </React.Fragment>
   );
