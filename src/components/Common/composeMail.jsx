@@ -126,7 +126,7 @@ const ComposeMail = props => {
       var stopTime = getUnixTimeUtc() + 3600;
       var account = await window.ethereum.enable();
       try {
-        streamId = await contractInteraction.StartReverseStream(
+        const streamId = await contractInteraction.StartReverseStream(
           web3Instance,
           amount,
           stopTime,
