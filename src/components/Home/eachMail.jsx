@@ -6,6 +6,7 @@ import * as contractInteraction from "../../utils/contractInteractions";
 import { Loader } from "react-feather";
 import Web3 from "web3";
 var web3Instance = new Web3();
+
 const EachMail = props => {
   let history = useHistory();
   const [remainingFund, setRemainingFund] = useState(0);
@@ -51,16 +52,20 @@ const EachMail = props => {
       onClick={() => history.push(`/${props.box}/${props.id}`)}
     >
       <div className="email-right">
-        <h5>{props.tokenName || "N/A"}</h5>
-        <h1>
-          {loading ? (
-            <Loader inline active />
-          ) : props.box === "inbox" ? (
-            remainingFund
-          ) : (
-            props.amount - remainingFund
-          )}
-        </h1>
+        {props.streamId ? (
+          <>
+            <h5>{props.tokenName || "N/A"}</h5>
+            <h1>
+              {loading ? (
+                <Loader inline active />
+              ) : props.box === "inbox" ? (
+                remainingFund
+              ) : (
+                props.amount - remainingFund
+              )}
+            </h1>{" "}
+          </>
+        ) : null}
       </div>
       <div className="update email-left">
         <div className="left">
