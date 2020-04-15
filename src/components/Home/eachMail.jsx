@@ -51,9 +51,9 @@ const EachMail = props => {
       style={{ animationDelay: `${0.1 + props.index / 10}s` }}
       onClick={() => history.push(`/${props.box}/${props.id}`)}
     >
-      <div className="email-right">
-        {props.streamId ? (
-          <>
+      {props.streamId ? (
+        <>
+          <div className="email-right">
             <h5>{props.tokenName || "N/A"}</h5>
             <h1>
               {loading ? (
@@ -64,9 +64,9 @@ const EachMail = props => {
                 props.amount - remainingFund
               )}
             </h1>{" "}
-          </>
-        ) : null}
-      </div>
+          </div>
+        </>
+      ) : null}
       <div className="update email-left">
         <div className="left">
           <h4>SUBJECT:</h4>
