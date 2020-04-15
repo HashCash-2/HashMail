@@ -24,8 +24,14 @@ const ComposeReply = props => {
       setLoading(true);
       var account = await window.ethereum.enable();
 
-      // const streamId = props.mail.streamId
-      await contractInteraction.CloseStream(web3Instance, 1, 1, 1, account[0]);
+      const streamId = props.mail.streamId;
+      await contractInteraction.CloseStream(
+        web3Instance,
+        streamId,
+        1,
+        1,
+        account[0]
+      );
 
       //   const response = await login(email, password);
       let obj = {};
