@@ -9,8 +9,9 @@ import { Mail } from "react-feather";
 import Web3 from "web3";
 import * as contractInteraction from "../../utils/contractInteractions";
 import Stepper from "react-stepper-horizontal";
-var web3Instance = new Web3();
 
+import { toast } from "react-toastify";
+var web3Instance = new Web3();
 const ComposeMail = props => {
   const [email, setEmail] = useState(props.mail ? props.mail : "");
   const [subject, setSubject] = useState("");
@@ -39,26 +40,21 @@ const ComposeMail = props => {
   const approveToken = async () => {
     setLoading(true);
     var account = await window.ethereum.enable();
-    await contractInteraction.ApproveTokens(
-      web3Instance,
-      account[0],
-      amount,
-      selectedTokenAddress
-    );
-
-    const getUnixTimeUtc = (dateString = new Date()) =>
-      Math.round(new Date(dateString).getTime() / 1000);
-    var stopTime = getUnixTimeUtc() + 3600;
-
-    await contractInteraction.StartReverseStream(
-      web3Instance,
-      amount,
-      stopTime,
-      selectedTokenAddress,
-      account[0]
-    );
-    setActiveStep(3);
-    setLoading(false);
+    try {
+      await contractInteraction.ApproveTokens(
+        web3Instance,
+        account[0],
+        amount,
+        selectedTokenAddress
+      );
+      setActiveStep(3);
+      setLoading(false);
+    } catch (e) {
+      console.log("error while approve token", e);
+      toast.error("Unable to approve tokens");
+      setActiveStep(2);
+      setLoading(false);
+    }
   };
 
   const fetchTokens = async () => {
@@ -125,32 +121,50 @@ const ComposeMail = props => {
     } else {
       setLoading(true);
 
-      //   const response = await login(email, password);
-      let obj = {};
-      obj.receiver_email = email;
-      obj.sender_email = "random@gmail.com";
-      obj.subject = subject;
-      obj.text = body;
-      obj.html = " ";
-      obj.amount = amount;
-      obj.tokens = selectedTokenAddress;
-      obj.streamId = streamId;
-      obj.rate = rate;
-      obj.expiryDate = expiry;
-      //   console.log("body", email, subject, body, obj);
-      Axios.defaults.headers.common["Authorization"] = localStorage.getItem(
-        "HCtoken"
-      );
-      Axios.post(`${URL}/api/email/send`, obj)
-        .then(data => {
-          swal("Email Sent", "Click OK to go back!", "success").then(() => {
-            window.location.reload();
+      const getUnixTimeUtc = (dateString = new Date()) =>
+        Math.round(new Date(dateString).getTime() / 1000);
+      var stopTime = getUnixTimeUtc() + 3600;
+      var account = await window.ethereum.enable();
+      try {
+        await contractInteraction.StartReverseStream(
+          web3Instance,
+          amount,
+          stopTime,
+          selectedTokenAddress,
+          account[0]
+        );
+        setActiveStep(3);
+        setLoading(false);
+        //   const response = await login(email, password);
+        let obj = {};
+        obj.receiver_email = email;
+        obj.sender_email = "random@gmail.com";
+        obj.subject = subject;
+        obj.text = body;
+        obj.html = " ";
+        obj.amount = amount;
+        obj.tokens = selectedTokenAddress;
+        obj.streamId = streamId;
+        obj.rate = rate;
+        obj.expiryDate = expiry;
+        //   console.log("body", email, subject, body, obj);
+        Axios.defaults.headers.common["Authorization"] = localStorage.getItem(
+          "HCtoken"
+        );
+        Axios.post(`${URL}/api/email/send`, obj)
+          .then(data => {
+            swal("Email Sent", "Click OK to go back!", "success").then(() => {
+              window.location.reload();
+            });
+          })
+          .catch(error => {
+            setLoading(false);
+            swal("Error", "Couldnt send email right now", "error");
           });
-        })
-        .catch(error => {
-          setLoading(false);
-          swal("Error", "Couldnt send email right now", "error");
-        });
+      } catch (e) {
+        console.log("error attaching stream");
+        toast.error("Unable to attach stream to email");
+      }
     }
   };
 

@@ -48,34 +48,43 @@ const ComposeReply = props => {
     } else {
       setLoading(true);
       var account = await window.ethereum.enable();
+      const streamId = props.mail.streamId;
+      try {
+        await contractInteraction.CloseStream(
+          web3Instance,
+          streamId,
+          1,
+          1,
+          account[0]
+        );
+        let obj = {};
+        obj.receiver_email = email;
+        obj.sender_email = "random@gmail.com";
+        obj.subject = subject;
+        obj.text = body;
+        obj.html = " ";
+        console.log("body", email, subject, body, obj);
+        Axios.defaults.headers.common["Authorization"] = localStorage.getItem(
+          "HCtoken"
+        );
+        Axios.post(`${URL}/api/email/send`, obj)
+          .then(data => {
+            console.log(data);
 
-      // const streamId = props.mail.streamId
+            window.location.reload();
+          })
+          .catch(error => {
+            setLoading(false);
+            swal("Error", "Couldnt send email right now", "error");
+          });
+
+        toast.success("Stream closed successfully!");
+      } catch (e) {
+        console.log("error closing stream", e);
+        toast.error("Error closing stream");
+      }
+
       // console.log(burnAmount, returnAmount);
-
-      await contractInteraction.CloseStream(web3Instance, 1, 1, 1, account[0]);
-      // toast.success("Any message")
-
-      //   const response = await login(email, password);
-      let obj = {};
-      obj.receiver_email = email;
-      obj.sender_email = "random@gmail.com";
-      obj.subject = subject;
-      obj.text = body;
-      obj.html = " ";
-      console.log("body", email, subject, body, obj);
-      Axios.defaults.headers.common["Authorization"] = localStorage.getItem(
-        "HCtoken"
-      );
-      Axios.post(`${URL}/api/email/send`, obj)
-        .then(data => {
-          console.log(data);
-
-          window.location.reload();
-        })
-        .catch(error => {
-          setLoading(false);
-          swal("Error", "Couldnt send email right now", "error");
-        });
     }
   };
 
