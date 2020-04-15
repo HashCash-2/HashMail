@@ -139,9 +139,9 @@ const ComposeMail = props => {
       );
       Axios.post(`${URL}/api/email/send`, obj)
         .then(data => {
-          console.log(data);
-
-          window.location.reload();
+          swal("Email Sent", "Click OK to go back!", "success").then(() => {
+            window.location.reload();
+          });
         })
         .catch(error => {
           setLoading(false);
