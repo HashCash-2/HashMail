@@ -1,62 +1,62 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Database } from "react-feather";
 import { Modal, Form, Button } from "semantic-ui-react";
 import swal from "sweetalert";
-import Axios from 'axios';
-import {URL} from '../../globalvariables'
-
+import Axios from "axios";
+import { URL } from "../../globalvariables";
 
 const AddTokenButton = () => {
   const [token, setToken] = useState("");
   const [address, setAddress] = useState("");
   const [loading, setLoading] = useState(false);
-  const [tokens,setTokens] = useState([])
+  const [tokens, setTokens] = useState([]);
 
   useEffect(() => {
     Axios.defaults.headers.common["Authorization"] = localStorage.getItem(
       "HCtoken"
     );
     Axios.get(`${URL}/api/token/user`).then(data => {
-        setTokens(data.data.data.tokens)      
-    })
-  },[])
-
+      if (data.data.data) {
+        setTokens(data.data.data.tokens);
+      }
+    });
+  }, []);
 
   const handleSubmit = async () => {
     setLoading(true);
     console.log(token, address);
-    let tkarr=[]
+    let tkarr = [];
     tokens.map(tk => {
-      tkarr.push({ name:tk.name, address:tk.address })
-    })
+      tkarr.push({ name: tk.name, address: tk.address });
+    });
 
-    let obj={
-      name:token,
-      address:address
-    }
+    let obj = {
+      name: token,
+      address: address
+    };
 
-    tkarr.push(obj)
-    console.log(tkarr)
+    tkarr.push(obj);
+    console.log(tkarr);
     // tokens.push(obj);
-    let Data={}
-    Data.tokens = tkarr
-    console.log(Data)
+    let Data = {};
+    Data.tokens = tkarr;
+    console.log(Data);
 
-      Axios.defaults.headers.common["Authorization"] = localStorage.getItem(
-        "HCtoken"
-      );
+    Axios.defaults.headers.common["Authorization"] = localStorage.getItem(
+      "HCtoken"
+    );
 
-      Axios.post(`${URL}/api/token/add/user`, Data)
-        .then(data => {
-          console.log(data);
-          setLoading(false);
-          window.location.reload();
-        })
-        .catch(error => {
-          setLoading(false);
+    Axios.post(`${URL}/api/token/add/user`, Data)
+      .then(data => {
+        console.log(data);
+        setLoading(false);
+        window.location.reload();
+      })
+      .catch(error => {
+        setLoading(false);
 
-          swal("Error", "Couldnt add token right now", "error");
-        });
+        swal("Error", "Couldnt add token right now", "error");
+      });
     // setLoading(false);
   };
 

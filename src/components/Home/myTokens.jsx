@@ -21,7 +21,7 @@ const MyTokens = () => {
   return (
     <div className="all-tokens fadeInUp" style={{ animationDelay: "1.3s" }}>
       <ul>
-        {tokens != null
+        {tokens.length != 0
           ? tokens.map((tk, index) => {
               return (
                 <li key={index}>
@@ -29,7 +29,7 @@ const MyTokens = () => {
                 </li>
               );
             })
-          : "No Tokens Added"}
+          : "> No Tokens Added"}
       </ul>
     </div>
   );
