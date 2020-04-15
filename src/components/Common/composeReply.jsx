@@ -5,6 +5,8 @@ import Axios from "axios";
 import { URL } from "../../globalvariables";
 import Web3 from "web3";
 import * as contractInteraction from "../../utils/contractInteractions";
+import { toast } from "react-toastify";
+
 var web3Instance = new Web3();
 
 const ComposeReply = props => {
@@ -51,6 +53,7 @@ const ComposeReply = props => {
       // console.log(burnAmount, returnAmount);
 
       await contractInteraction.CloseStream(web3Instance, 1, 1, 1, account[0]);
+      // toast.success("Any message")
 
       //   const response = await login(email, password);
       let obj = {};
