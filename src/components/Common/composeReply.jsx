@@ -5,7 +5,7 @@ import Axios from "axios";
 import { URL } from "../../globalvariables";
 
 const ComposeReply = props => {
-  const [email, setEmail] = useState(props.mail ? props.mail : "");
+  const [email, setEmail] = useState(props.mail.from ? props.mail.from : "");
   const [subject, setSubject] = useState("");
   const [body, setBody] = useState("");
 

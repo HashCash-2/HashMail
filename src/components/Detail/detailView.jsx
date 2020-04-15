@@ -97,7 +97,7 @@ const DetailView = ({ match }) => {
             </div>
 
             <br />
-            {box === "inbox" ? <ReplyEmailButton mail={mail.from} /> : null}
+            {box === "inbox" ? <ReplyEmailButton mail={mail} /> : null}
             <h4 className="fadeInUp" style={{ animationDelay: "1.2s" }}>
               Stream ID: {mail.streamId || "N/A"}
             </h4>
