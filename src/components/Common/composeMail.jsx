@@ -4,6 +4,8 @@ import swal from "sweetalert";
 import Axios from "axios";
 import { URL } from "../../globalvariables";
 import { formatDate } from "../../utils/helpers";
+import { Mail } from "react-feather";
+
 import Web3 from "web3";
 import * as contractInteraction from "../../utils/contractInteractions";
 import Stepper from "react-stepper-horizontal";
@@ -92,6 +94,7 @@ const ComposeMail = props => {
         })
         .catch(err => {
           swal("Couldnt fetch", "Receiver tokens cant be fetched", "error");
+          setLoading(false);
         });
     } else {
       swal(
@@ -99,6 +102,7 @@ const ComposeMail = props => {
         "To fetch the tokens receiver can receive",
         "error"
       );
+      setLoading(false);
     }
   };
 
@@ -190,7 +194,7 @@ const ComposeMail = props => {
           <Stepper
             steps={[
               { title: "Write Email" },
-              { title: "Fetch Tokens" },
+              { title: "Attach Tokens" },
               { title: "Approve and Send" }
             ]}
             activeStep={activeStep - 1}
@@ -240,6 +244,7 @@ const ComposeMail = props => {
                 Continue
               </Button>
             </Form.Field>
+            <br />
           </>
         ) : null}
 
@@ -300,6 +305,7 @@ const ComposeMail = props => {
                 </Button>
               </Form.Field>
             </Form.Field>
+            <br />
           </>
         ) : null}
 
@@ -309,24 +315,56 @@ const ComposeMail = props => {
               3. Sign Txn
             </Button> */}
             {/* <p>{streamId}</p> */}
+            <div className="preview-mail">
+              <div>
+                <Mail />
+              </div>
+              <div>
+                <h2>Preview Email</h2>
+              </div>
+            </div>
+
             <h4>to: {email}</h4>
             <h4>subject: {subject}</h4>
             <p>{body}</p>
             <br />
-            <h6>TOKEN ADDRESS: {selectedTokenAddress}</h6>
+
             <Button
               color="linkedin"
               floated="right"
               onClick={handleSubmit}
               loading={loading}
             >
-              Send Mail
+              Send
             </Button>
+
+            <br />
+
+            <div className="stream-details">
+              <h6>
+                <strong>TOKEN ADDRESS: </strong>
+                {selectedTokenAddress}
+              </h6>
+              <h6>
+                <strong>STREAM ADDRESS: </strong>
+                {selectedTokenAddress}
+              </h6>
+              <h6>
+                <strong>AMOUNT: </strong>
+                {amount}
+              </h6>
+              <h6>
+                <strong>EXPIRY: </strong>
+                {expiry}
+              </h6>
+              <h6>
+                <strong>RETURN RATE: </strong>
+                {rate}
+              </h6>
+            </div>
           </>
         ) : null}
       </Form>
-      <br />
-      <br />
       <br />
     </React.Fragment>
   );
