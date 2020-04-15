@@ -441,6 +441,27 @@ const HashCashContract = [
         internalType: "uint256",
         name: "streamId",
         type: "uint256"
+      }
+    ],
+    name: "balanceOfReverseStream",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "balance",
+        type: "uint256"
+      }
+    ],
+    payable: false,
+    stateMutability: "view",
+    type: "function"
+  },
+  {
+    constant: true,
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "streamId",
+        type: "uint256"
       },
       {
         internalType: "address",
@@ -629,6 +650,7 @@ export async function ApproveTokens(web3, account, amount, tokenAddress) {
       .send({ from: userAddr, gasPrice: 0 });
   } catch (e) {
     console.log("error while approving", e);
+    throw e;
   }
   return;
 }
@@ -657,7 +679,7 @@ export async function StartReverseStream(
 
   try {
     // create reverse stream
-    var streamID = await HashCashContract.methods
+    await HashCashContract.methods
       .createReverseStream(
         ethers.utils.parseEther(deposit),
         tokenAddress,
@@ -665,10 +687,10 @@ export async function StartReverseStream(
       )
       .send({ from: userAddr, gasPrice: 0 });
     console.log("Tx was a success", streamID.toString());
-    return streamID, null;
+    return streamID;
   } catch (e) {
     console.log("error while createing reverse stream", e);
-    return 0, e;
+    throw e;
   }
 }
 
@@ -684,6 +706,20 @@ export async function CloseStream(web3, streamID, burn, refund, userAddr) {
     return null;
   } catch (e) {
     console.log("error while closing stream", e);
-    return e;
+    throw e;
+  }
+}
+
+export async function BalanceOfStream(web3, streamID, userAddr) {
+  var HashCashContract = await GetHashCashContract(web3);
+  try {
+    // create reverse stream
+    var balance = await HashCashContract.methods
+      .balanceOfReverseStream(streamID)
+      .call();
+    return balance;
+  } catch (e) {
+    console.log("error while getting user balance stream", e);
+    throw e;
   }
 }

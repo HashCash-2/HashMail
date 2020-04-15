@@ -7,8 +7,9 @@ import { formatDate } from "../../utils/helpers";
 import Web3 from "web3";
 import * as contractInteraction from "../../utils/contractInteractions";
 import Stepper from "react-stepper-horizontal";
-var web3Instance = new Web3();
 
+import { toast } from "react-toastify";
+var web3Instance = new Web3();
 const ComposeMail = props => {
   const [email, setEmail] = useState(props.mail ? props.mail : "");
   const [subject, setSubject] = useState("");
@@ -26,7 +27,7 @@ const ComposeMail = props => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    console.log(amount, expiry, selectedTokenAddress);
+    // console.log(amount, expiry, selectedTokenAddress);
     const adate = new Date(expiry);
     const today = new Date();
     const diffTime = Math.abs(adate - today);
@@ -37,26 +38,21 @@ const ComposeMail = props => {
   const approveToken = async () => {
     setLoading(true);
     var account = await window.ethereum.enable();
-    await contractInteraction.ApproveTokens(
-      web3Instance,
-      account[0],
-      amount,
-      selectedTokenAddress
-    );
-
-    const getUnixTimeUtc = (dateString = new Date()) =>
-      Math.round(new Date(dateString).getTime() / 1000);
-    var stopTime = getUnixTimeUtc() + 3600;
-
-    await contractInteraction.StartReverseStream(
-      web3Instance,
-      amount,
-      stopTime,
-      selectedTokenAddress,
-      account[0]
-    );
-    setActiveStep(3);
-    setLoading(false);
+    try {
+      await contractInteraction.ApproveTokens(
+        web3Instance,
+        account[0],
+        amount,
+        selectedTokenAddress
+      );
+      setActiveStep(3);
+      setLoading(false);
+    } catch (e) {
+      console.log("error while approve token", e);
+      toast.error("Unable to approve tokens");
+      setActiveStep(2);
+      setLoading(false);
+    }
   };
 
   const fetchTokens = async () => {
@@ -67,24 +63,22 @@ const ComposeMail = props => {
       );
       Axios.get(`${URL}/api/token/user/${email}`)
         .then(data => {
-          console.log(data);
+          //   console.log(data);
           if (data.data.message == "success") {
-            console.log(data.data.data.tokens);
+            // console.log(data.data.data.tokens);
             let tokensarr = [];
-            data.data.data.tokens.map(obj => {
+            data.data.data.tokens.map((obj, index) => {
               tokensarr.push({
-                key: obj.name,
+                key: index,
                 text: obj.name,
                 value: obj.address
               });
             });
-            console.log(tokensarr);
             setTokens(tokensarr);
             setLoading(false);
             setActiveStep(2);
           } else {
             // no token for this account
-            console.log(data.data);
             setTokens([
               {
                 key: "no tokens",
@@ -93,6 +87,7 @@ const ComposeMail = props => {
               }
             ]);
             swal("No tokens", "No Receiver tokens for this email", "error");
+            setLoading(false);
           }
         })
         .catch(err => {
@@ -122,37 +117,55 @@ const ComposeMail = props => {
     } else {
       setLoading(true);
 
-      //   const response = await login(email, password);
-      let obj = {};
-      obj.receiver_email = email;
-      obj.sender_email = "random@gmail.com";
-      obj.subject = subject;
-      obj.text = body;
-      obj.html = " ";
-      obj.amount = amount;
-      obj.tokens = selectedTokenAddress;
-      obj.streamId = streamId;
-      obj.rate = rate;
-      obj.expiryDate = expiry;
-      console.log("body", email, subject, body, obj);
-      Axios.defaults.headers.common["Authorization"] = localStorage.getItem(
-        "HCtoken"
-      );
-      Axios.post(`${URL}/api/email/send`, obj)
-        .then(data => {
-          console.log(data);
-
-          window.location.reload();
-        })
-        .catch(error => {
-          setLoading(false);
-          swal("Error", "Couldnt send email right now", "error");
-        });
+      const getUnixTimeUtc = (dateString = new Date()) =>
+        Math.round(new Date(dateString).getTime() / 1000);
+      var stopTime = getUnixTimeUtc() + 3600;
+      var account = await window.ethereum.enable();
+      try {
+        await contractInteraction.StartReverseStream(
+          web3Instance,
+          amount,
+          stopTime,
+          selectedTokenAddress,
+          account[0]
+        );
+        setActiveStep(3);
+        setLoading(false);
+        //   const response = await login(email, password);
+        let obj = {};
+        obj.receiver_email = email;
+        obj.sender_email = "random@gmail.com";
+        obj.subject = subject;
+        obj.text = body;
+        obj.html = " ";
+        obj.amount = amount;
+        obj.tokens = selectedTokenAddress;
+        obj.streamId = streamId;
+        obj.rate = rate;
+        obj.expiryDate = expiry;
+        //   console.log("body", email, subject, body, obj);
+        Axios.defaults.headers.common["Authorization"] = localStorage.getItem(
+          "HCtoken"
+        );
+        Axios.post(`${URL}/api/email/send`, obj)
+          .then(data => {
+            swal("Email Sent", "Click OK to go back!", "success").then(() => {
+              window.location.reload();
+            });
+          })
+          .catch(error => {
+            setLoading(false);
+            swal("Error", "Couldnt send email right now", "error");
+          });
+      } catch (e) {
+        console.log("error attaching stream");
+        toast.error("Unable to attach stream to email");
+      }
     }
   };
 
   const goBack = () => {
-    console.log(email, body, subject);
+    // console.log(email, body, subject);
     if (activeStep === 2) {
       setActiveStep(1);
     } else if (activeStep === 3) {
@@ -256,7 +269,7 @@ const ComposeMail = props => {
                   type="date"
                   value={expiry}
                   onChange={e => {
-                    console.log(e.target.value);
+                    // console.log(e.target.value);
                     if (new Date(e.target.value) - new Date() <= 0) {
                       swal(
                         "Invalid Date",
