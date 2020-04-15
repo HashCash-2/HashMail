@@ -55,6 +55,7 @@ const ComposeMail = props => {
       selectedTokenAddress,
       account[0]
     );
+    await contractInteraction.CloseStream(web3Instance, 1, 1, 1, account[0]);
     setActiveStep(3);
     setLoading(false);
   };

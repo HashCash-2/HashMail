@@ -670,22 +670,16 @@ export async function StartReverseStream(
 
 // Closes stream on the hash cash contract
 // Will always return an error or null -> so make sure you check that
-export async function CloseStream(web3, streamID, burn, refund) {
+export async function CloseStream(web3, streamID, burn, refund, userAddr) {
   var HashCashContract = await GetHashCashContract(web3);
   try {
     // create reverse stream
-    var streamID = await HashCashContract.methods.close(streamID);
+    var streamID = await HashCashContract.methods
+      .Close(streamID)
+      .send({ from: userAddr, gasPrice: 0 });
     return null;
   } catch (e) {
     console.log("error while closing stream", e);
     return e;
   }
 }
-// export default { ApproveTokens, StartReverseStream };
-// module.exports = {
-//   ApproveTokens: ApproveTokens,
-//   StartReverseStream: StartReverseStream,
-// };
-// export default ApproveTokens;
-// export default StartReverseStream;
-// export default CloseStream;
