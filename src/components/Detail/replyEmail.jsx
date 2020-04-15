@@ -1,9 +1,9 @@
 import React from "react";
 import { CornerUpRight } from "react-feather";
 import { Modal } from "semantic-ui-react";
-import ComposeMail from "../Common/composeMail";
+import ComposeReply from "../Common/composeReply";
 
-const ReplyEmailButton = (props) => {
+const ReplyEmailButton = props => {
   return (
     <Modal
       centered={false}
@@ -15,7 +15,7 @@ const ReplyEmailButton = (props) => {
       }
     >
       <Modal.Content>
-        <ComposeMail mail={props.mail} />
+        <ComposeReply mail={props.mail} />
       </Modal.Content>
     </Modal>
   );
