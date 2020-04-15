@@ -719,6 +719,8 @@ export async function BalanceOfStream(web3, streamID) {
     var balance = await HashCashContract.methods
       .balanceOfReverseStream(streamID)
       .call();
+    balance = Number((balance / 10 ** 18).toFixed(3));
+
     return balance;
   } catch (e) {
     console.log("error while getting user balance stream", e);
