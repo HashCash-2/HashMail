@@ -4,7 +4,8 @@ import Countdown from "react-countdown-now";
 
 import * as contractInteraction from "../../utils/contractInteractions";
 import { Loader } from "react-feather";
-
+import Web3 from "web3";
+var web3Instance = new Web3();
 const EachMail = props => {
   let history = useHistory();
   const [remainingFund, setRemainingFund] = useState(0);
@@ -31,7 +32,11 @@ const EachMail = props => {
   useEffect(() => {
     // call the function here
     const getBalance = async () => {
-      const balance = await contractInteraction.BalanceOfStream(props.streamId);
+      const balance = await contractInteraction.BalanceOfStream(
+        web3Instance,
+        props.streamId
+      );
+      console.log("balance of stream", balance);
       setRemainingFund(balance);
       setLoading(false);
     };
