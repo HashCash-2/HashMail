@@ -598,6 +598,7 @@ const HashCashContract = [
 
 async function GetHashCashContract(web3) {
   web3 = new Web3(web3.givenProvider);
+  var contract;
   try {
     let contract = new web3.eth.Contract(
       HashCashContract,
@@ -615,6 +616,7 @@ async function GetHashCashContract(web3) {
 
 async function GetTokenContract(web3, tokenAddress) {
   web3 = new Web3(web3.givenProvider);
+  var contract;
   try {
     let contract = new web3.eth.Contract(TokenABI, tokenAddress, {
       transactionConfirmationBlocks: 1
