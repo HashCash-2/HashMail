@@ -26,7 +26,7 @@ const ComposeMail = props => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    console.log(amount, expiry, selectedTokenAddress);
+    // console.log(amount, expiry, selectedTokenAddress);
     const adate = new Date(expiry);
     const today = new Date();
     const diffTime = Math.abs(adate - today);
@@ -67,24 +67,22 @@ const ComposeMail = props => {
       );
       Axios.get(`${URL}/api/token/user/${email}`)
         .then(data => {
-          console.log(data);
+          //   console.log(data);
           if (data.data.message == "success") {
-            console.log(data.data.data.tokens);
+            // console.log(data.data.data.tokens);
             let tokensarr = [];
-            data.data.data.tokens.map(obj => {
+            data.data.data.tokens.map((obj, index) => {
               tokensarr.push({
-                key: obj.name,
+                key: index,
                 text: obj.name,
                 value: obj.address
               });
             });
-            console.log(tokensarr);
             setTokens(tokensarr);
             setLoading(false);
             setActiveStep(2);
           } else {
             // no token for this account
-            console.log(data.data);
             setTokens([
               {
                 key: "no tokens",
@@ -93,6 +91,7 @@ const ComposeMail = props => {
               }
             ]);
             swal("No tokens", "No Receiver tokens for this email", "error");
+            setLoading(false);
           }
         })
         .catch(err => {
@@ -134,7 +133,7 @@ const ComposeMail = props => {
       obj.streamId = streamId;
       obj.rate = rate;
       obj.expiryDate = expiry;
-      console.log("body", email, subject, body, obj);
+      //   console.log("body", email, subject, body, obj);
       Axios.defaults.headers.common["Authorization"] = localStorage.getItem(
         "HCtoken"
       );
@@ -152,7 +151,7 @@ const ComposeMail = props => {
   };
 
   const goBack = () => {
-    console.log(email, body, subject);
+    // console.log(email, body, subject);
     if (activeStep === 2) {
       setActiveStep(1);
     } else if (activeStep === 3) {
@@ -256,7 +255,7 @@ const ComposeMail = props => {
                   type="date"
                   value={expiry}
                   onChange={e => {
-                    console.log(e.target.value);
+                    // console.log(e.target.value);
                     if (new Date(e.target.value) - new Date() <= 0) {
                       swal(
                         "Invalid Date",
