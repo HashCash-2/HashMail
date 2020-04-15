@@ -598,40 +598,27 @@ const HashCashContract = [
 
 async function GetHashCashContract(web3) {
   web3 = new Web3(web3.givenProvider);
-  var contract;
-  try {
-    let contract = new web3.eth.Contract(
-      HashCashContract,
-      HashCashContractAddr,
-      {
-        transactionConfirmationBlocks: 1
-      }
-    );
-  } catch (e) {
-    console.log("cannot create hashcash contract instance", e);
-    return null, e;
-  }
-  return contract, null;
+
+  let contract = new web3.eth.Contract(HashCashContract, HashCashContractAddr, {
+    transactionConfirmationBlocks: 1
+  });
+
+  return contract;
 }
 
 async function GetTokenContract(web3, tokenAddress) {
   web3 = new Web3(web3.givenProvider);
-  var contract;
-  try {
-    let contract = new web3.eth.Contract(TokenABI, tokenAddress, {
-      transactionConfirmationBlocks: 1
-    });
-  } catch (e) {
-    console.log("cannot create token contract instance", e);
-    return null, e;
-  }
 
-  return contract, null;
+  let contract = new web3.eth.Contract(TokenABI, tokenAddress, {
+    transactionConfirmationBlocks: 1
+  });
+  return contract;
 }
 
 export async function ApproveTokens(web3, account, amount, tokenAddress) {
   var userAddr = account;
   var tokenContract = await GetTokenContract(web3, tokenAddress);
+
   console.log(
     "balance of account",
     await tokenContract.methods.balanceOf(account).call()
