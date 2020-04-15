@@ -164,7 +164,7 @@ const ComposeMail = props => {
             setLoading(false);
             swal("Error", "Couldnt send email right now", "error");
           });
-        toast.success("Created new stream " + streamId);
+        toast.success("Created new stream " + streamID);
       } catch (e) {
         console.log("error attaching stream", e);
         toast.error("Unable to attach stream to email");
