@@ -22,6 +22,7 @@ const ComposeMail = props => {
   const [expiry, setExpiry] = useState(formatDate(new Date()));
   const [streamId, setStreamId] = useState("");
   const [rate, setRate] = useState("");
+  const [tokenName, setTokenName] = useState("");
 
   const [tokens, setTokens] = useState([]);
   const [activeStep, setActiveStep] = useState(1);
@@ -76,6 +77,7 @@ const ComposeMail = props => {
                 value: obj.address
               });
             });
+            console.log(tokensarr);
             setTokens(tokensarr);
             setLoading(false);
             setActiveStep(2);
@@ -147,6 +149,7 @@ const ComposeMail = props => {
         obj.streamId = streamId;
         obj.rate = rate;
         obj.expiryDate = expiry;
+        obj.TokenName = tokenName;
         //   console.log("body", email, subject, body, obj);
         Axios.defaults.headers.common["Authorization"] = localStorage.getItem(
           "HCtoken"
@@ -258,7 +261,10 @@ const ComposeMail = props => {
                   label="Token"
                   options={tokens}
                   placeholder="Token"
-                  onChange={(e, data) => setSelectedTokenAddress(data.value)}
+                  onChange={(e, d) => {
+                    setSelectedTokenAddress(d.value);
+                    setTokenName(e.target.textContent);
+                  }}
                   value={selectedTokenAddress}
                 />
                 <Form.Input
