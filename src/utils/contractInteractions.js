@@ -1,7 +1,7 @@
 import { ethers } from "ethers";
 import Web3 from "web3";
 
-var HashCashContractAddr = "0x6FFB575F071419A1eAED8560Df96F5d8Dd789BF3";
+var HashCashContractAddr = "0xAf6B44753b0856b375882aB7C5576D5a226b25de";
 
 const TokenABI = [
   {
@@ -686,8 +686,7 @@ export async function StartReverseStream(
         stopTime
       )
       .send({ from: userAddr, gasPrice: 0 });
-    console.log("Tx was a success", streamID.toString());
-    return streamID;
+    console.log("Tx was a success");
   } catch (e) {
     console.log("error while createing reverse stream", e);
     throw e;
