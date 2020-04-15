@@ -3,7 +3,9 @@ import { Form, Button, TextArea } from "semantic-ui-react";
 import swal from "sweetalert";
 import Axios from "axios";
 import { URL } from "../../globalvariables";
-
+import Web3 from "web3";
+import * as contractInteraction from "../../utils/contractInteractions";
+var web3Instance = new Web3();
 const ComposeReply = props => {
   const [email, setEmail] = useState(props.mail ? props.mail : "");
   const [subject, setSubject] = useState("");
@@ -20,6 +22,8 @@ const ComposeReply = props => {
       );
     } else {
       setLoading(true);
+      var account = await window.ethereum.enable();
+      await contractInteraction.CloseStream(web3Instance, 1, 1, 1, account[0]);
 
       //   const response = await login(email, password);
       let obj = {};
