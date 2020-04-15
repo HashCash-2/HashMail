@@ -24,6 +24,7 @@ const ComposeMail = props => {
   const [attachActive, setAttachActive] = useState(false);
   const [signActive, setSignActive] = useState(false);
   const [sendActive, setSendActive] = useState(false);
+  const [approveActive, setApproveActive] = useState(false);
   const [tokenVisible, setTokenVisible] = useState(false);
 
   const [loading, setLoading] = useState(false);
@@ -31,16 +32,15 @@ const ComposeMail = props => {
   useEffect(() => {
     console.log(amount, expiry, selectedTokenAddress);
     if (amount !== 0 && selectedTokenAddress !== "" && expiry !== "") {
-      setSignActive(true);
+      setSendActive(true);
+      setApproveActive(true);
     }
   }, [amount, expiry, selectedTokenAddress]);
 
   const approveToken = async () => {
     var account = await window.ethereum.enable();
-    console.log("web3", web3Instance);
-
     await ApproveTokens(web3Instance, account[0], amount, selectedTokenAddress);
-    setAttachActive(true);
+    setSignActive(true);
   };
 
   const fetchTokens = async () => {
@@ -64,6 +64,7 @@ const ComposeMail = props => {
             console.log(tokensarr);
             setTokens(tokensarr);
             setTokenVisible(true);
+            setApproveActive(true);
           } else {
             // no token for this account
             console.log(data.data);
@@ -171,17 +172,16 @@ const ComposeMail = props => {
         </Form.Field>
 
         <Form.Field>
-          <Button color="yellow" onClick={approveToken}>
-            1. Approve Token
+          <Button color="linkedin" onClick={fetchTokens}>
+            1. Attach Stream
           </Button>
-
           <Button
-            color="linkedin"
+            color="yellow"
+            onClick={approveToken}
+            disabled={!approveActive}
             floated="right"
-            onClick={fetchTokens}
-            disabled={!attachActive}
           >
-            2. Attach Stream
+            2. Approve Token
           </Button>
         </Form.Field>
         <br />
