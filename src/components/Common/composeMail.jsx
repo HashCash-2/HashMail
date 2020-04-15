@@ -126,7 +126,7 @@ const ComposeMail = props => {
       var stopTime = getUnixTimeUtc() + 3600;
       var account = await window.ethereum.enable();
       try {
-        streamId = await contractInteraction.StartReverseStream(
+        var streamID = await contractInteraction.StartReverseStream(
           web3Instance,
           amount,
           stopTime,
@@ -144,7 +144,7 @@ const ComposeMail = props => {
         obj.html = " ";
         obj.amount = amount;
         obj.tokens = selectedTokenAddress;
-        obj.streamId = streamId;
+        obj.streamId = streamID;
         obj.rate = rate;
         obj.expiryDate = expiry;
         //   console.log("body", email, subject, body, obj);
@@ -161,9 +161,9 @@ const ComposeMail = props => {
             setLoading(false);
             swal("Error", "Couldnt send email right now", "error");
           });
-        toast.success("Created new stream", streamId);
+        toast.success("Created new stream " + streamId);
       } catch (e) {
-        console.log("error attaching stream");
+        console.log("error attaching stream", e);
         toast.error("Unable to attach stream to email");
       }
     }
