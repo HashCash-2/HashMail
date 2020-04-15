@@ -1,2 +1,2 @@
 // export const URL = "http://localhost:5000"
-export const URL = "https://hashcashapi.herokuapp.com"
+export const URL = process.env.REACT_APP_API_URL;
