@@ -5,7 +5,7 @@ import Axios from "axios";
 import { URL } from "../../globalvariables";
 import { formatDate } from "../../utils/helpers";
 import Web3 from "web3";
-import ApproveTokens from "../../utils/contractInteractions";
+import * as contractInteraction from "../../utils/contractInteractions";
 var web3Instance = new Web3();
 
 const ComposeMail = props => {
@@ -39,7 +39,22 @@ const ComposeMail = props => {
 
   const approveToken = async () => {
     var account = await window.ethereum.enable();
-    await ApproveTokens(web3Instance, account[0], amount, selectedTokenAddress);
+    await contractInteraction.ApproveTokens(
+      web3Instance,
+      account[0],
+      amount,
+      selectedTokenAddress
+    );
+
+    const getUnixTimeUtc = (dateString = new Date()) =>
+      Math.round(new Date(dateString).getTime() / 1000);
+    var stopTime = getUnixTimeUtc + 3600;
+    await contractInteraction.StartReverseStream(
+      web3Instance,
+      amount,
+      stopTime,
+      selectedTokenAddress
+    );
     setSignActive(true);
   };
 

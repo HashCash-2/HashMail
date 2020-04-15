@@ -612,7 +612,7 @@ async function GetTokenContract(web3, tokenAddress) {
   return contract;
 }
 
-async function ApproveTokens(web3, account, amount, tokenAddress) {
+export async function ApproveTokens(web3, account, amount, tokenAddress) {
   var userAddr = account;
   var tokenContract = await GetTokenContract(web3, tokenAddress);
   console.log(
@@ -634,7 +634,12 @@ async function ApproveTokens(web3, account, amount, tokenAddress) {
 // 2. Start the reverse stream
 // Metamask will open twice to do this
 // Will always return streamID and error. Error can be null
-async function StartReverseStream(web3, deposit, stopTime, tokenAddress) {
+export async function StartReverseStream(
+  web3,
+  deposit,
+  stopTime,
+  tokenAddress
+) {
   // get hash cash contract instance
   var HashCashContract = await GetHashCashContract(web3);
 
@@ -655,7 +660,7 @@ async function StartReverseStream(web3, deposit, stopTime, tokenAddress) {
 
 // Closes stream on the hash cash contract
 // Will always return an error or null -> so make sure you check that
-async function CloseStream(web3, streamID, burn, refund) {
+export async function CloseStream(web3, streamID, burn, refund) {
   var HashCashContract = await GetHashCashContract(web3);
   try {
     // create reverse stream
@@ -666,4 +671,11 @@ async function CloseStream(web3, streamID, burn, refund) {
     return e;
   }
 }
-export default ApproveTokens;
+// export default { ApproveTokens, StartReverseStream };
+// module.exports = {
+//   ApproveTokens: ApproveTokens,
+//   StartReverseStream: StartReverseStream,
+// };
+// export default ApproveTokens;
+// export default StartReverseStream;
+// export default CloseStream;
