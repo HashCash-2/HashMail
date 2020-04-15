@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import Countdown from "react-countdown-now";
 
+import * as contractInteraction from "../../utils/contractInteractions";
+import { Loader } from "react-feather";
+
 const EachMail = props => {
   let history = useHistory();
   const [remainingFund, setRemainingFund] = useState(0);
@@ -27,9 +30,13 @@ const EachMail = props => {
 
   useEffect(() => {
     // call the function here
-    const dummy = 100;
-    setRemainingFund(dummy);
-    setLoading(false);
+    const getBalance = async () => {
+      const balance = await contractInteraction.BalanceOfStream(props.streamId);
+      setRemainingFund(balance);
+      setLoading(false);
+    };
+
+    getBalance();
   }, []);
 
   return (
@@ -41,7 +48,13 @@ const EachMail = props => {
       <div className="email-right">
         <h5>{props.tokenName || "N/A"}</h5>
         <h1>
-          {props.box === "inbox" ? remainingFund : props.amount - remainingFund}
+          {loading ? (
+            <Loader inline active />
+          ) : props.box === "inbox" ? (
+            remainingFund
+          ) : (
+            props.amount - remainingFund
+          )}
         </h1>
       </div>
       <div className="update email-left">

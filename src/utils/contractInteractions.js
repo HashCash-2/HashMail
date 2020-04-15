@@ -709,7 +709,7 @@ export async function CloseStream(web3, streamID, burn, refund, userAddr) {
   }
 }
 
-export async function BalanceOfStream(web3, streamID, userAddr) {
+export async function BalanceOfStream(web3, streamID) {
   var HashCashContract = await GetHashCashContract(web3);
   try {
     // create reverse stream
