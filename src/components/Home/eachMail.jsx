@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import Countdown from "react-countdown-now";
 
 const EachMail = props => {
   let history = useHistory();
+  const [remainingFund, setRemainingFund] = useState(0);
+  const [loading, setLoading] = useState(true);
 
   // Random component
   const Completionist = () => <span>Email Expired!</span>;
@@ -23,6 +25,13 @@ const EachMail = props => {
     }
   };
 
+  useEffect(() => {
+    // call the function here
+    const dummy = 100;
+    setRemainingFund(dummy);
+    setLoading(false);
+  }, []);
+
   return (
     <div
       className="email fadeInUp"
@@ -31,7 +40,9 @@ const EachMail = props => {
     >
       <div className="email-right">
         <h5>{props.tokenName || "N/A"}</h5>
-        <h1>{props.amount || "N/A"}</h1>
+        <h1>
+          {props.box === "inbox" ? remainingFund : props.amount - remainingFund}
+        </h1>
       </div>
       <div className="update email-left">
         <div className="left">
