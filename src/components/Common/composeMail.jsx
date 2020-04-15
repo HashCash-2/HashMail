@@ -20,7 +20,7 @@ const ComposeMail = props => {
   const [selectedTokenAddress, setSelectedTokenAddress] = useState("");
   const [amount, setAmount] = useState(0);
   const [expiry, setExpiry] = useState(formatDate(new Date()));
-  const [streamId, setStreamId] = useState("");
+  //   const [streamId, setStreamId] = useState("");
   const [rate, setRate] = useState("");
   const [tokenName, setTokenName] = useState("");
 
@@ -108,10 +108,10 @@ const ComposeMail = props => {
     }
   };
 
-  const handleSign = () => {
-    console.log("signed");
-    setStreamId("0x8f51a68052a3e1d56d145092da42ba13b02146bb");
-  };
+  //   const handleSign = () => {
+  //     console.log("signed");
+  //     setStreamId("0x8f51a68052a3e1d56d145092da42ba13b02146bb");
+  //   };
 
   const handleSubmit = async () => {
     if (email.match(`[a-zA-Z0-9._-]+@[a-z]+.(com|in|net|org|edu)`) === null) {
@@ -350,10 +350,6 @@ const ComposeMail = props => {
             <div className="stream-details">
               <h6>
                 <strong>TOKEN ADDRESS: </strong>
-                {selectedTokenAddress}
-              </h6>
-              <h6>
-                <strong>STREAM ADDRESS: </strong>
                 {selectedTokenAddress}
               </h6>
               <h6>

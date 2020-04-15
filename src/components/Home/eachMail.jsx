@@ -57,11 +57,11 @@ const EachMail = props => {
             <h5>{props.tokenName || "N/A"}</h5>
             <h1>
               {loading ? (
-                <Loader inline active />
+                <Loader />
               ) : props.box === "inbox" ? (
-                remainingFund
-              ) : (
                 props.amount - remainingFund
+              ) : (
+                remainingFund
               )}
             </h1>{" "}
           </div>
