@@ -686,7 +686,10 @@ export async function StartReverseStream(
         stopTime
       )
       .send({ from: userAddr, gasPrice: 0 });
+    var nextStreamID = await HashCashContract.methods.nextStreamId().call();
+    console.log("next streamID fetches", nextStreamID);
     console.log("Tx was a success");
+    return nextStreamID - 1;
   } catch (e) {
     console.log("error while createing reverse stream", e);
     throw e;
