@@ -1,7 +1,7 @@
 import { ethers } from "ethers";
 import Web3 from "web3";
 
-var HashCashContractAddr = "0xAf6B44753b0856b375882aB7C5576D5a226b25de";
+var HashCashContractAddr = "0x30C47a5A76f49DcE0233a82B499AcfED4046F51E";
 
 const TokenABI = [
   {
@@ -607,6 +607,16 @@ const HashCashContract = [
         internalType: "uint256",
         name: "streamId",
         type: "uint256"
+      },
+      {
+        internalType: "uint256",
+        name: "burnPart",
+        type: "uint256"
+      },
+      {
+        internalType: "uint256",
+        name: "refundPart",
+        type: "uint256"
       }
     ],
     name: "Close",
@@ -698,12 +708,18 @@ export async function StartReverseStream(
 
 // Closes stream on the hash cash contract
 // Will always return an error or null -> so make sure you check that
-export async function CloseStream(web3, streamID, burn, refund, userAddr) {
+export async function CloseStream(
+  web3,
+  streamID,
+  burnPart,
+  refundPart,
+  userAddr
+) {
   var HashCashContract = await GetHashCashContract(web3);
   try {
     // create reverse stream
     var streamID = await HashCashContract.methods
-      .Close(streamID)
+      .Close(streamID, burnPart, refundPart)
       .send({ from: userAddr, gasPrice: 0 });
     return null;
   } catch (e) {

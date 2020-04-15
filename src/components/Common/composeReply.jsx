@@ -53,8 +53,8 @@ const ComposeReply = props => {
         await contractInteraction.CloseStream(
           web3Instance,
           streamId,
-          1,
-          1,
+          burnAmount,
+          returnAmount,
           account[0]
         );
         let obj = {};
