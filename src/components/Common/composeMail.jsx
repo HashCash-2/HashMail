@@ -46,13 +46,16 @@ const ComposeMail = props => {
 
     const getUnixTimeUtc = (dateString = new Date()) =>
       Math.round(new Date(dateString).getTime() / 1000);
-    var stopTime = getUnixTimeUtc + 3600;
+    var stopTime = getUnixTimeUtc() + 3600;
+
     await contractInteraction.StartReverseStream(
       web3Instance,
       amount,
       stopTime,
-      selectedTokenAddress
+      selectedTokenAddress,
+      account[0]
     );
+    await contractInteraction.CloseStream(web3Instance, 1, 1, 1, account[0]);
     setActiveStep(3);
     setLoading(false);
   };

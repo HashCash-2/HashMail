@@ -1,7 +1,7 @@
 import { ethers } from "ethers";
 import Web3 from "web3";
 
-var HashCashContractAddr = "0xd7c5542ad8C14D4a9052edB95bdF0c7647755dbc";
+var HashCashContractAddr = "0x6FFB575F071419A1eAED8560Df96F5d8Dd789BF3";
 
 const TokenABI = [
   {
@@ -598,7 +598,7 @@ const HashCashContract = [
 
 async function GetHashCashContract(web3) {
   web3 = new Web3(web3.givenProvider);
-  let contract = new web3.eth.Contract(TokenABI, HashCashContractAddr, {
+  let contract = new web3.eth.Contract(HashCashContract, HashCashContractAddr, {
     transactionConfirmationBlocks: 1
   });
   return contract;
@@ -638,19 +638,29 @@ export async function StartReverseStream(
   web3,
   deposit,
   stopTime,
-  tokenAddress
+  tokenAddress,
+  userAddr
 ) {
+  console.log(
+    "received data fro form",
+    deposit,
+    stopTime,
+    tokenAddress,
+    userAddr
+  );
   // get hash cash contract instance
   var HashCashContract = await GetHashCashContract(web3);
 
   try {
     // create reverse stream
-    var streamID = await HashCashContract.methods.createReverseStream(
-      ethers.utils.parseEther(deposit),
-      tokenAddress,
-      stopTime
-    );
-    console.log("Tx was a success", streamID);
+    var streamID = await HashCashContract.methods
+      .createReverseStream(
+        ethers.utils.parseEther(deposit),
+        tokenAddress,
+        stopTime
+      )
+      .send({ from: userAddr, gasPrice: 0 });
+    console.log("Tx was a success", streamID.toString());
     return streamID, null;
   } catch (e) {
     console.log("error while createing reverse stream", e);
@@ -660,22 +670,16 @@ export async function StartReverseStream(
 
 // Closes stream on the hash cash contract
 // Will always return an error or null -> so make sure you check that
-export async function CloseStream(web3, streamID, burn, refund) {
+export async function CloseStream(web3, streamID, burn, refund, userAddr) {
   var HashCashContract = await GetHashCashContract(web3);
   try {
     // create reverse stream
-    var streamID = await HashCashContract.methods.close(streamID);
+    var streamID = await HashCashContract.methods
+      .Close(streamID)
+      .send({ from: userAddr, gasPrice: 0 });
     return null;
   } catch (e) {
     console.log("error while closing stream", e);
     return e;
   }
 }
-// export default { ApproveTokens, StartReverseStream };
-// module.exports = {
-//   ApproveTokens: ApproveTokens,
-//   StartReverseStream: StartReverseStream,
-// };
-// export default ApproveTokens;
-// export default StartReverseStream;
-// export default CloseStream;
