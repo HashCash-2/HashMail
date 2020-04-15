@@ -17,6 +17,7 @@
     "react-feather": "^2.0.4",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.1",
+    "react-stepper-horizontal": "^1.0.11",
     "semantic-ui-react": "^0.88.2",
     "sweetalert": "^2.1.2",
     "web3": "^1.2.6"
