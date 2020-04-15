@@ -36,23 +36,23 @@ const ComposeMail = props => {
 
   const approveToken = async () => {
     setLoading(true);
-    // var account = await window.ethereum.enable();
-    // await contractInteraction.ApproveTokens(
-    //   web3Instance,
-    //   account[0],
-    //   amount,
-    //   selectedTokenAddress
-    // );
+    var account = await window.ethereum.enable();
+    await contractInteraction.ApproveTokens(
+      web3Instance,
+      account[0],
+      amount,
+      selectedTokenAddress
+    );
 
-    // const getUnixTimeUtc = (dateString = new Date()) =>
-    //   Math.round(new Date(dateString).getTime() / 1000);
-    // var stopTime = getUnixTimeUtc + 3600;
-    // await contractInteraction.StartReverseStream(
-    //   web3Instance,
-    //   amount,
-    //   stopTime,
-    //   selectedTokenAddress
-    // );
+    const getUnixTimeUtc = (dateString = new Date()) =>
+      Math.round(new Date(dateString).getTime() / 1000);
+    var stopTime = getUnixTimeUtc + 3600;
+    await contractInteraction.StartReverseStream(
+      web3Instance,
+      amount,
+      stopTime,
+      selectedTokenAddress
+    );
     setActiveStep(3);
     setLoading(false);
   };
