@@ -1,7 +1,7 @@
 import { ethers } from "ethers";
 import Web3 from "web3";
 
-var HashCashContractAddr = "0x30C47a5A76f49DcE0233a82B499AcfED4046F51E";
+var HashCashContractAddr = "0xAb4B806b315D32BCD5a7Ba4D264DFb706902f6bB";
 
 const TokenABI = [
   {
@@ -443,6 +443,27 @@ const HashCashContract = [
         type: "uint256"
       }
     ],
+    name: "deltaOfReverseStream",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "delta",
+        type: "uint256"
+      }
+    ],
+    payable: false,
+    stateMutability: "view",
+    type: "function"
+  },
+  {
+    constant: true,
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "streamId",
+        type: "uint256"
+      }
+    ],
     name: "balanceOfReverseStream",
     outputs: [
       {
@@ -654,9 +675,10 @@ export async function ApproveTokens(web3, account, amount, tokenAddress) {
     "balance of account",
     await tokenContract.methods.balanceOf(account).call()
   );
+
   try {
     await tokenContract.methods
-      .approve(userAddr, ethers.utils.parseEther(amount))
+      .approve(HashCashContractAddr, ethers.utils.parseEther(amount))
       .send({ from: userAddr, gasPrice: 0 });
   } catch (e) {
     console.log("error while approving", e);
@@ -686,9 +708,9 @@ export async function StartReverseStream(
   );
   // get hash cash contract instance
   var HashCashContract = await GetHashCashContract(web3);
+  var TokeContract = await GetTokenContract(web3, tokenAddress);
 
   try {
-    // create reverse stream
     await HashCashContract.methods
       .createReverseStream(
         ethers.utils.parseEther(deposit),
