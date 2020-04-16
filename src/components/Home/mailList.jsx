@@ -43,7 +43,7 @@ const MailList = props => {
               box={whichBox}
               amount={mail.amount}
               streamId={mail.streamId}
-              tokenName={mail.TokenName}
+              tokenName={mail.tokenname}
               expiry={mail.expiryDate}
               id={mail._id}
               date={mail.date}
