@@ -59,9 +59,9 @@ const EachMail = props => {
               {loading ? (
                 <Loader />
               ) : props.box === "inbox" ? (
-                props.amount - remainingFund
+                (props.amount - remainingFund).toFixed(3)
               ) : (
-                remainingFund
+                remainingFund.toFixed(3)
               )}
             </h1>{" "}
           </div>

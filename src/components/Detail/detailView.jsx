@@ -41,7 +41,7 @@ const DetailView = ({ match }) => {
             <h3>
               Email Value :{" "}
               <strong>
-                {mail.amount || "N/A"} {mail.TokenName || "N/A"}
+                {mail.amount || "N/A"} {mail.tokenname || "N/A"}
               </strong>
               <br />
               Expires :{" "}
