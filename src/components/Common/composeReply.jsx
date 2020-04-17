@@ -31,7 +31,7 @@ const ComposeReply = props => {
 
     setTimeout(() => {
       setSliderValue(0);
-      toast.info("Feature Coming Soon!");
+      toast.info("Feature Coming Soon!", { toastId: 1 });
     }, 1000);
   };
 
