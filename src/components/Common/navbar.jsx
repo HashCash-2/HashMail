@@ -1,11 +1,12 @@
 import React from "react";
+import { Mail } from "react-feather";
 
 const Navbar = () => {
   const navLinkProps = (path, animationDelay) => ({
     className: `fadeInUp ${window.location.pathname === path ? "focused" : ""}`,
     style: {
-      animationDelay: `${animationDelay}s`,
-    },
+      animationDelay: `${animationDelay}s`
+    }
   });
 
   return (
@@ -13,16 +14,17 @@ const Navbar = () => {
       className="Navbar"
       style={{
         animationDelay: "0.5s",
-        transition: "all 0.3s ease-in-out",
+        transition: "all 0.3s ease-in-out"
       }}
     >
       <img
         className="fadeInUp logo"
         alt="Hash Mail"
-        src="/icon.png"
+        src="/mail.svg"
         style={{
+          height: "45%",
           animationDelay: "0.0s",
-          transition: "all 0.3s ease-in-out",
+          transition: "all 0.3s ease-in-out"
         }}
       />
 

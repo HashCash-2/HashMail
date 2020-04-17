@@ -168,6 +168,7 @@ const ComposeMail = props => {
       } catch (e) {
         console.log("error attaching stream", e);
         toast.error("Unable to attach stream to email");
+        setLoading(false);
       }
     }
   };
