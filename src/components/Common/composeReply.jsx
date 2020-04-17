@@ -139,11 +139,11 @@ const ComposeReply = props => {
           <div className="percentage">
             <h4>
               BURN: {props.mail.amount * ((100 - sliderValue) / 100).toFixed(2)}{" "}
-              {props.mail.TokenName || "N/A"}
+              {props.mail.tokenname || "N/A"}
             </h4>
             <h4>
               RETURN: {props.mail.amount * (sliderValue / 100).toFixed(2)}{" "}
-              {props.mail.TokenName || "N/A"}
+              {props.mail.tokenname || "N/A"}
             </h4>
           </div>
         </div>
