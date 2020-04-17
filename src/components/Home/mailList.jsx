@@ -34,12 +34,8 @@ const MailList = props => {
     <div className="updates">
       {loading ? (
         <Loader active inline />
-      ) : (whichBox === "inbox" ? inbox : outbox).length === 0 ? (
-        <span className="fadeInUp" style={{ animationDelay: "0.7s" }}>
-          No Emails here
-        </span>
       ) : (
-        null(whichBox === "inbox" ? inbox : outbox).map((mail, index) => {
+        (whichBox === "inbox" ? inbox : outbox).map((mail, index) => {
           return (
             <EachMail
               key={index}
