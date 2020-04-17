@@ -1,7 +1,7 @@
 import { ethers } from "ethers";
 import Web3 from "web3";
 
-var HashCashContractAddr = "0xAb4B806b315D32BCD5a7Ba4D264DFb706902f6bB";
+var HashCashContractAddr = "0xe36524a5F9412Dec85d8cBbA4b38F2CF58BA34f5";
 
 const TokenABI = [
   {
