@@ -28,6 +28,11 @@ const ComposeReply = props => {
     const returnVal = props.mail.amount * (sliderValue / 100);
     setReturnAmount(returnVal);
     console.log(burnAmount, returnAmount);
+
+    setTimeout(() => {
+      setSliderValue(0);
+      toast.info("Feature Coming Soon!");
+    }, 1000);
   };
 
   useEffect(() => {
