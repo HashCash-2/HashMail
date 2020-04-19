@@ -1,11 +1,13 @@
 import React, { useState } from "react";
-import CustomHeader from "../Common/customHeader";
-import { Form, Button } from "semantic-ui-react";
-import swal from "sweetalert";
 import { useHistory } from "react-router-dom";
 import Axios from "axios";
-import setAuthToken from "../../utils/setAuthToken";
+import swal from "sweetalert";
+
 import { URL } from "../../globalvariables";
+import setAuthToken from "../../utils/setAuthToken";
+
+import { Form, Button } from "semantic-ui-react";
+import CustomHeader from "../Common/customHeader";
 
 const LoginBox = () => {
   const [email, setEmail] = useState("");

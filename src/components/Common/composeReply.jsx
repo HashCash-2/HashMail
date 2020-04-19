@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Form, Button, TextArea } from "semantic-ui-react";
 import swal from "sweetalert";
 import Axios from "axios";
-import { URL } from "../../globalvariables";
-import Web3 from "web3";
-import * as contractInteraction from "../../utils/contractInteractions";
 import { toast } from "react-toastify";
+
+import Web3 from "web3";
+import { URL } from "../../globalvariables";
+import * as contractInteraction from "../../utils/contractInteractions";
+
+import { Form, Button, TextArea } from "semantic-ui-react";
 
 var web3Instance = new Web3();
 

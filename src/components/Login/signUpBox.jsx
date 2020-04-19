@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import CustomHeader from "../Common/customHeader";
-import { Form, Button } from "semantic-ui-react";
-// import { useHistory } from "react-router-dom";
 import swal from "sweetalert";
 import Axios from "axios";
+
 import { URL } from "../../globalvariables";
+
+import { Form, Button } from "semantic-ui-react";
+import CustomHeader from "../Common/customHeader";
 
 const SignUpBox = () => {
   const [fname, setFname] = useState("");

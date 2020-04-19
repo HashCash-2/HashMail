@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import Countdown from "react-countdown-now";
 
-import * as contractInteraction from "../../utils/contractInteractions";
-import { Loader } from "react-feather";
 import Web3 from "web3";
+import * as contractInteraction from "../../utils/contractInteractions";
+
+import Countdown from "react-countdown-now";
+import { Loader } from "react-feather";
+
 var web3Instance = new Web3();
 
 const EachMail = props => {

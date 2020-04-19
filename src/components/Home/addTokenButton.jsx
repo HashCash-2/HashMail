@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Database } from "react-feather";
-import { Modal, Form, Button } from "semantic-ui-react";
 import swal from "sweetalert";
 import Axios from "axios";
+
 import { URL } from "../../globalvariables";
+
+import { Modal, Form, Button } from "semantic-ui-react";
+import { Database } from "react-feather";
 
 const AddTokenButton = () => {
   const [token, setToken] = useState("");

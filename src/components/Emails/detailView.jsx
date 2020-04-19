@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
+import Axios from "axios";
+
+import { URL } from "../../globalvariables";
+
+import { Loader } from "semantic-ui-react";
 import CustomHeader from "../Common/customHeader";
 import ReplyEmailButton from "./replyEmail";
-import Axios from "axios";
-import { URL } from "../../globalvariables";
-import { Loader } from "semantic-ui-react";
 
 const DetailView = ({ match }) => {
   let { box, mailid } = match.params;

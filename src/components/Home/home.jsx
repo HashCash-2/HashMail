@@ -1,9 +1,10 @@
 import React, { useEffect } from "react";
+import { Route, Switch, useHistory } from "react-router-dom";
+
 import Tabs from "./tabs";
 import NewEmailButton from "./newEmailButton";
 import CustomHeader from "../Common/customHeader";
 import MailList from "../Emails/mailList";
-import { Route, Switch, useHistory } from "react-router-dom";
 import LogoutButton from "./logoutButton";
 import DetailView from "../Emails/detailView";
 import AddTokenButton from "./addTokenButton";

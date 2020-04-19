@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
-import EachMail from "./eachMail";
 import { useStoreState, useStoreActions } from "easy-peasy";
 import Axios from "axios";
+
 import { URL } from "../../globalvariables";
+
 import { Loader } from "semantic-ui-react";
+import EachMail from "./eachMail";
 
 const MailList = props => {
   const whichBox = props.whichBox;

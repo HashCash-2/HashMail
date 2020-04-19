@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { Form, Button, TextArea, Icon } from "semantic-ui-react";
 import swal from "sweetalert";
 import Axios from "axios";
-import { URL } from "../../globalvariables";
-import { formatDate } from "../../utils/helpers";
-import { Mail } from "react-feather";
 
 import Web3 from "web3";
 import * as contractInteraction from "../../utils/contractInteractions";
+import { URL } from "../../globalvariables";
+import { formatDate } from "../../utils/helpers";
+
 import Stepper from "react-stepper-horizontal";
+import { Form, Button, TextArea, Icon } from "semantic-ui-react";
+import { Mail } from "react-feather";
 
 import { toast } from "react-toastify";
 var web3Instance = new Web3();
