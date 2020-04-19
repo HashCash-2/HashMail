@@ -1,65 +1,30 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import swal from "sweetalert";
-import Axios from "axios";
 
-import { URL } from "../../globalvariables";
+import { useStoreState } from "easy-peasy";
 
 import { Modal, Form, Button } from "semantic-ui-react";
 import { Database } from "react-feather";
+import { addNewToken } from "../../services/tokenService";
 
 const AddTokenButton = () => {
   const [token, setToken] = useState("");
   const [address, setAddress] = useState("");
   const [loading, setLoading] = useState(false);
-  const [tokens, setTokens] = useState([]);
 
-  useEffect(() => {
-    Axios.defaults.headers.common["Authorization"] = localStorage.getItem(
-      "HCtoken"
-    );
-    Axios.get(`${URL}/api/token/user`).then(data => {
-      if (data.data.data) {
-        setTokens(data.data.data.tokens);
-      }
-    });
-  }, []);
+  const tokens = useStoreState(state => state.tokens.allTokens);
 
   const handleSubmit = async () => {
     setLoading(true);
-    console.log(token, address);
-    let tkarr = [];
-    tokens.foreach(tk => {
-      tkarr.push({ name: tk.name, address: tk.address });
-    });
+    const newTokens = [...tokens, { name: token, address: address }];
 
-    let obj = {
-      name: token,
-      address: address
-    };
-
-    tkarr.push(obj);
-    console.log(tkarr);
-    // tokens.push(obj);
-    let Data = {};
-    Data.tokens = tkarr;
-    console.log(Data);
-
-    Axios.defaults.headers.common["Authorization"] = localStorage.getItem(
-      "HCtoken"
-    );
-
-    Axios.post(`${URL}/api/token/add/user`, Data)
-      .then(data => {
-        console.log(data);
-        setLoading(false);
-        window.location.reload();
-      })
-      .catch(error => {
-        setLoading(false);
-
-        swal("Error", "Couldnt add token right now", "error");
-      });
-    // setLoading(false);
+    try {
+      await addNewToken({ tokens: newTokens });
+      window.location.reload();
+    } catch (error) {
+      swal("Error", "Couldnt add token right now", "error");
+    }
+    setLoading(false);
   };
 
   return (

@@ -14,6 +14,12 @@ const Home = () => {
   let history = useHistory();
 
   useEffect(() => {
+    const checkMetaMask = async () => {
+      await window.ethereum.enable();
+    };
+
+    checkMetaMask();
+
     if (!localStorage.getItem("HCtoken")) {
       history.push("/login");
     } else {
