@@ -9,5 +9,6 @@ export default {
 
   // Mails
   GET_INBOX: "/api/email/inbox",
-  GET_OUTBOX: "/api/email/read"
+  GET_OUTBOX: "/api/email/read",
+  SEND_MAIL: "/api/email/send"
 };

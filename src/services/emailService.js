@@ -20,4 +20,49 @@ const fetchMailDetails = async (box, id) => {
   }
 };
 
-export { fetchMails, fetchMailDetails };
+const sendMail = async (
+  receiver_email,
+  sender_email,
+  subject,
+  text,
+  amount,
+  tokens,
+  streamId,
+  rate,
+  expiryDate,
+  tokenname
+) => {
+  http.setAuthToken(localStorage.getItem("HCtoken"));
+
+  const res = await http.post(APIURL.SEND_MAIL, {
+    receiver_email: receiver_email,
+    sender_email: sender_email,
+    subject: subject,
+    text: text,
+    html: " ",
+    amount: amount,
+    tokens: tokens,
+    streamId: streamId,
+    rate: rate,
+    expiryDate,
+    expiryDate,
+    tokenname: tokenname
+  });
+
+  return res;
+};
+
+const sendReply = async (receiver_email, sender_email, subject, text) => {
+  http.setAuthToken(localStorage.getItem("HCtoken"));
+  const res = await http.post(APIURL.SEND_MAIL, {
+    receiver_email: receiver_email,
+    sender_email: sender_email,
+    subject: subject,
+    text: text,
+    html: " "
+  });
+
+  return res;
+};
+
+export { fetchMails, fetchMailDetails, sendMail, sendReply };
