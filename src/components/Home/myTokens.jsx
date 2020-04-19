@@ -21,7 +21,7 @@ const MyTokens = () => {
   return (
     <div className="all-tokens fadeInUp" style={{ animationDelay: "1.3s" }}>
       <ul>
-        {tokens.length != 0
+        {tokens.length !== 0
           ? tokens.map((tk, index) => {
               return (
                 <li key={index}>

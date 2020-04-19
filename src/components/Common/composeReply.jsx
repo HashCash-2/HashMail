@@ -10,8 +10,9 @@ import { toast } from "react-toastify";
 var web3Instance = new Web3();
 
 const ComposeReply = props => {
-  const [email, setEmail] = useState(props.mail.from);
-  const [subject, setSubject] = useState(props.mail.subject);
+  const email = props.mail.from;
+  const subject = props.mail.subject;
+
   const [body, setBody] = useState("");
 
   const [burnAmount, setBurnAmount] = useState(0);

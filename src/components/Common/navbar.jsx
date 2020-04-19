@@ -1,5 +1,4 @@
 import React from "react";
-import { Mail } from "react-feather";
 
 const Navbar = () => {
   const navLinkProps = (path, animationDelay) => ({

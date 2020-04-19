@@ -6,9 +6,7 @@ import { useHistory } from "react-router-dom";
 import Axios from "axios";
 import setAuthToken from "../../utils/setAuthToken";
 import { URL } from "../../globalvariables";
-import Web3 from "web3";
 
-var web3Instance = new Web3();
 const LoginBox = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

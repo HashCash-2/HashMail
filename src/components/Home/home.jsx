@@ -2,10 +2,10 @@ import React, { useEffect } from "react";
 import Tabs from "./tabs";
 import NewEmailButton from "./newEmailButton";
 import CustomHeader from "../Common/customHeader";
-import MailList from "./mailList";
+import MailList from "../Emails/mailList";
 import { Route, Switch, useHistory } from "react-router-dom";
 import LogoutButton from "./logoutButton";
-import DetailView from "../Detail/detailView";
+import DetailView from "../Emails/detailView";
 import AddTokenButton from "./addTokenButton";
 import MyTokens from "./myTokens";
 

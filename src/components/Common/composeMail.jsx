@@ -67,10 +67,10 @@ const ComposeMail = props => {
       Axios.get(`${URL}/api/token/user/${email}`)
         .then(data => {
           //   console.log(data);
-          if (data.data.message == "success") {
+          if (data.data.message === "success") {
             // console.log(data.data.data.tokens);
             let tokensarr = [];
-            data.data.data.tokens.map((obj, index) => {
+            data.data.data.tokens.foreach((obj, index) => {
               tokensarr.push({
                 key: index,
                 text: obj.name,

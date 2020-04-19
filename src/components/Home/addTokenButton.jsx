@@ -26,7 +26,7 @@ const AddTokenButton = () => {
     setLoading(true);
     console.log(token, address);
     let tkarr = [];
-    tokens.map(tk => {
+    tokens.foreach(tk => {
       tkarr.push({ name: tk.name, address: tk.address });
     });
 

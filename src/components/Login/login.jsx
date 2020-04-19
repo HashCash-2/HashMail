@@ -35,6 +35,8 @@ const Login = () => {
           <div className="small-width">
             <LoginBox />
             <a
+              href="#signup"
+              role="button"
               className="fadeInUp"
               style={{ cursor: "pointer", animationDelay: "1s" }}
               onClick={() => {

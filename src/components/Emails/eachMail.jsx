@@ -43,6 +43,7 @@ const EachMail = props => {
     };
 
     getBalance();
+    //eslint-disable-next-line
   }, []);
 
   return (

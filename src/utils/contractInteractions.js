@@ -708,7 +708,7 @@ export async function StartReverseStream(
   );
   // get hash cash contract instance
   var HashCashContract = await GetHashCashContract(web3);
-  var TokeContract = await GetTokenContract(web3, tokenAddress);
+  //   var TokeContract = await GetTokenContract(web3, tokenAddress);
 
   try {
     await HashCashContract.methods
@@ -740,7 +740,7 @@ export async function CloseStream(
   var HashCashContract = await GetHashCashContract(web3);
   try {
     // create reverse stream
-    var streamID = await HashCashContract.methods
+    await HashCashContract.methods
       .Close(streamID, burnPart, refundPart)
       .send({ from: userAddr, gasPrice: 0 });
     return null;
