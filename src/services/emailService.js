@@ -45,7 +45,6 @@ const sendMail = async (
     streamId: streamId,
     rate: rate,
     expiryDate,
-    expiryDate,
     tokenname: tokenname
   });
 

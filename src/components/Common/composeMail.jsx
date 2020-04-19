@@ -117,7 +117,7 @@ const ComposeMail = props => {
         setLoading(false);
 
         try {
-          const res = await sendMail(
+          await sendMail(
             email,
             "random@gmail.com",
             subject,

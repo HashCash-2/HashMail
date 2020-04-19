@@ -65,7 +65,7 @@ const ComposeReply = props => {
           account[0]
         );
 
-        const res = await sendReply(email, "random@gmail.com", subject, body);
+        await sendReply(email, "random@gmail.com", subject, body);
         window.location.reload();
 
         toast.success("Stream closed successfully!");
