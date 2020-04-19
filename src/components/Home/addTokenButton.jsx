@@ -1,18 +1,20 @@
 import React, { useState } from "react";
 import swal from "sweetalert";
 
-import { useStoreState } from "easy-peasy";
+import { useStoreState, useStoreActions } from "easy-peasy";
 
 import { Modal, Form, Button } from "semantic-ui-react";
 import { Database } from "react-feather";
-import { addNewToken } from "../../services/tokenService";
+import { addNewToken, fetchAllTokens } from "../../services/tokenService";
 
 const AddTokenButton = () => {
   const [token, setToken] = useState("");
   const [address, setAddress] = useState("");
   const [loading, setLoading] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
 
   const tokens = useStoreState(state => state.tokens.allTokens);
+  const setTokens = useStoreActions(action => action.tokens.setTokens);
 
   const handleSubmit = async () => {
     setLoading(true);
@@ -20,20 +22,27 @@ const AddTokenButton = () => {
 
     try {
       await addNewToken({ tokens: newTokens });
-      window.location.reload();
+      const res = await fetchAllTokens();
+      setTokens(res.data.data.tokens);
     } catch (error) {
       swal("Error", "Couldnt add token right now", "error");
     }
     setLoading(false);
+    setModalOpen(false);
+    swal("Success", `You are now accepting ${token}`, "success");
   };
 
   return (
     <Modal
+      open={modalOpen}
       centered={false}
       trigger={
         <div
           className="fadeInUp button orange-button"
           style={{ animationDelay: "1.3s" }}
+          onClick={() => {
+            setModalOpen(true);
+          }}
         >
           <Database />
           <span>Add a Token</span>
