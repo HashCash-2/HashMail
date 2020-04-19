@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 
 import { fetchAllTokens } from "../../services/tokenService";
-import { useStoreState, useStoreActions, action } from "easy-peasy";
+import { useStoreState, useStoreActions } from "easy-peasy";
 
 const MyTokens = () => {
   const tokens = useStoreState(state => state.tokens.allTokens);
@@ -16,6 +16,7 @@ const MyTokens = () => {
     };
 
     fetchTokens();
+    // eslint-disable-next-line
   }, []);
 
   return (

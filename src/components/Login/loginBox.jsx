@@ -4,7 +4,7 @@ import swal from "sweetalert";
 
 import { Form, Button } from "semantic-ui-react";
 import CustomHeader from "../Common/customHeader";
-import { loginUser } from "../../services/authServices";
+import { loginUser } from "../../services/authService";
 
 const LoginBox = () => {
   const [email, setEmail] = useState("");

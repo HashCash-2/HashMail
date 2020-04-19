@@ -14,16 +14,12 @@ const EachMail = props => {
   const [remainingFund, setRemainingFund] = useState(0);
   const [loading, setLoading] = useState(true);
 
-  // Random component
   const Completionist = () => <span>Email Expired!</span>;
 
-  // Renderer callback with condition
   const renderer = ({ days, hours, minutes, seconds, completed }) => {
     if (completed) {
-      // Render a completed state
       return <Completionist />;
     } else {
-      // Render a countdown
       return (
         <span>
           {days} days {hours} hours {minutes} minutes
@@ -33,13 +29,11 @@ const EachMail = props => {
   };
 
   useEffect(() => {
-    // call the function here
     const getBalance = async () => {
       const balance = await contractInteraction.BalanceOfStream(
         web3Instance,
         props.streamId
       );
-      console.log("balance of stream", balance);
       setRemainingFund(balance);
       setLoading(false);
     };

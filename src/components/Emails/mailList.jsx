@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useStoreState, useStoreActions } from "easy-peasy";
-import Axios from "axios";
-
-import { URL } from "../../globalvariables";
 
 import { Loader } from "semantic-ui-react";
 import EachMail from "./eachMail";
+import { fetchMails } from "../../services/emailService";
 
 const MailList = props => {
   const whichBox = props.whichBox;
@@ -18,17 +16,17 @@ const MailList = props => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setLoading(true);
-    Axios.defaults.headers.common["Authorization"] = localStorage.getItem(
-      "HCtoken"
-    );
-    Axios.get(`${URL}/api/email/inbox`).then(data => {
-      setInbox(data.data.emails);
-    });
-    Axios.get(`${URL}/api/email/read`).then(data => {
-      setOutbox(data.data.emails);
-    });
-    setLoading(false);
+    const fetchAllMails = async () => {
+      setLoading(true);
+      try {
+        const { inbox, outbox } = await fetchMails();
+        setInbox(inbox.emails);
+        setOutbox(outbox.emails);
+      } catch (error) {}
+      setLoading(false);
+    };
+
+    fetchAllMails();
     //eslint-disable-next-line
   }, []);
 

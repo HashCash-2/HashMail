@@ -4,7 +4,7 @@ import swal from "sweetalert";
 
 import { Form, Button } from "semantic-ui-react";
 import CustomHeader from "../Common/customHeader";
-import { signupUser, loginUser } from "../../services/authServices";
+import { signupUser, loginUser } from "../../services/authService";
 
 const SignUpBox = () => {
   const [fname, setFname] = useState("");
