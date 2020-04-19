@@ -1,7 +1,9 @@
 import React from "react";
-import { LogOut } from "react-feather";
 import { useHistory } from "react-router-dom";
 import Axios from "axios";
+
+import { LogOut } from "react-feather";
+
 const LogoutButton = () => {
   let history = useHistory();
   return (

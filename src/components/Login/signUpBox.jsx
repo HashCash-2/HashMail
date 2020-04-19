@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import CustomHeader from "../Common/customHeader";
-import { Form, Button } from "semantic-ui-react";
-// import { useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import swal from "sweetalert";
-import Axios from "axios";
-import { URL } from "../../globalvariables";
+
+import { Form, Button } from "semantic-ui-react";
+import CustomHeader from "../Common/customHeader";
+import { signupUser, loginUser } from "../../services/authService";
 
 const SignUpBox = () => {
   const [fname, setFname] = useState("");
@@ -13,7 +13,7 @@ const SignUpBox = () => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // let history = useHistory();
+  let history = useHistory();
 
   const handleSubmit = async () => {
     if (email.match(`[a-zA-Z0-9._-]+@[a-z]+.(com|in|net|org|edu)`) === null) {
@@ -30,27 +30,19 @@ const SignUpBox = () => {
       );
     } else {
       setLoading(true);
-      let obj = {};
-      obj.name = fname + " " + lname;
-      obj.email = email;
-      obj.password = password;
-      //   const response = await login(email, password);
-      console.log("signup", obj);
 
-      Axios.post(`${URL}/user/register`, obj)
-        .then(data => {
-          console.log(data);
-          if (data.data.message === "success") {
-            setLoading(false);
-            swal("Success", "Account created", "success");
-          }
-        })
-        .catch(error => {
-          // var err = error.response.data;
-          console.log(error.response.data);
+      try {
+        const res = await signupUser(fname, lname, email, password);
+        if (res.data.message === "success") {
           setLoading(false);
-          swal("Error", "email already existing", "error");
-        });
+          await swal("User Created", "Click OK to login!", "success");
+          await loginUser(email, password);
+          history.push("/inbox");
+        }
+      } catch (error) {
+        setLoading(false);
+        swal("Error", "email already existing", "error");
+      }
     }
   };
 

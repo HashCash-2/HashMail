@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
+
+import { Loader } from "semantic-ui-react";
 import CustomHeader from "../Common/customHeader";
 import ReplyEmailButton from "./replyEmail";
-import Axios from "axios";
-import { URL } from "../../globalvariables";
-import { Loader } from "semantic-ui-react";
+import { fetchMailDetails } from "../../services/emailService";
 
 const DetailView = ({ match }) => {
   let { box, mailid } = match.params;
@@ -12,20 +12,16 @@ const DetailView = ({ match }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    Axios.defaults.headers.common["Authorization"] = localStorage.getItem(
-      "HCtoken"
-    );
-    if (box === "inbox") {
-      Axios.get(`${URL}/api/email/inbox/${mailid}`).then(data => {
-        setMail(data.data.email);
-        setLoading(false);
-      });
-    } else if (box === "outbox") {
-      Axios.get(`${URL}/api/email/read/${mailid}`).then(data => {
-        setMail(data.data.email);
-        setLoading(false);
-      });
-    }
+    const getMail = async () => {
+      setLoading(true);
+      try {
+        const email = await fetchMailDetails(box, mailid);
+        setMail(email);
+      } catch (error) {}
+      setLoading(false);
+    };
+
+    getMail();
     //eslint-disable-next-line
   }, []);
 

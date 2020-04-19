@@ -34,14 +34,18 @@ axios.interceptors.request.use(function(config) {
   return config;
 });
 
-function setUserToken(token) {
-  axios.defaults.headers.common["Authorization"] = token;
-}
+const setAuthToken = token => {
+  if (token) {
+    axios.defaults.headers.common["Authorization"] = token;
+  } else {
+    delete axios.defaults.headers.common["Authorization"];
+  }
+};
 
 export default {
   get: axios.get,
   post: axios.post,
   put: axios.put,
   delete: axios.delete,
-  setUserToken
+  setAuthToken: setAuthToken
 };

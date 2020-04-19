@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { Form, Button, TextArea } from "semantic-ui-react";
 import swal from "sweetalert";
-import Axios from "axios";
-import { URL } from "../../globalvariables";
+import { toast } from "react-toastify";
+
 import Web3 from "web3";
 import * as contractInteraction from "../../utils/contractInteractions";
-import { toast } from "react-toastify";
+
+import { Form, Button, TextArea } from "semantic-ui-react";
+import { sendReply } from "../../services/emailService";
 
 var web3Instance = new Web3();
 
 const ComposeReply = props => {
-  const [email, setEmail] = useState(props.mail.from);
-  const [subject, setSubject] = useState(props.mail.subject);
+  const email = props.mail.from;
+  const subject = props.mail.subject;
+
   const [body, setBody] = useState("");
 
   const [burnAmount, setBurnAmount] = useState(0);
@@ -62,34 +64,14 @@ const ComposeReply = props => {
           returnAmount,
           account[0]
         );
-        let obj = {};
-        obj.receiver_email = email;
-        obj.sender_email = "random@gmail.com";
-        obj.subject = subject;
-        obj.text = body;
-        obj.html = " ";
-        console.log("body", email, subject, body, obj);
-        Axios.defaults.headers.common["Authorization"] = localStorage.getItem(
-          "HCtoken"
-        );
-        Axios.post(`${URL}/api/email/send`, obj)
-          .then(data => {
-            console.log(data);
 
-            window.location.reload();
-          })
-          .catch(error => {
-            setLoading(false);
-            swal("Error", "Couldnt send email right now", "error");
-          });
+        const res = await sendReply(email, "random@gmail.com", subject, body);
+        window.location.reload();
 
         toast.success("Stream closed successfully!");
       } catch (e) {
-        console.log("error closing stream", e);
         toast.error("Error closing stream");
       }
-
-      // console.log(burnAmount, returnAmount);
     }
   };
 

@@ -1,11 +1,12 @@
 import React from "react";
-import { Send, Inbox } from "react-feather";
 import { Link } from "react-router-dom";
 import { useStoreState } from "easy-peasy";
 
+import { Send, Inbox } from "react-feather";
+
 const Tabs = () => {
-  const inbox = useStoreState((state) => state.emails.inbox);
-  const outbox = useStoreState((state) => state.emails.sent);
+  const inbox = useStoreState(state => state.emails.inbox);
+  const outbox = useStoreState(state => state.emails.sent);
 
   return (
     <div className="MapExplorer fadeInUp" style={{ animationDelay: "0.7s" }}>

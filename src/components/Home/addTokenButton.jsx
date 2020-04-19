@@ -1,72 +1,48 @@
-import React, { useState, useEffect } from "react";
-import { Database } from "react-feather";
-import { Modal, Form, Button } from "semantic-ui-react";
+import React, { useState } from "react";
 import swal from "sweetalert";
-import Axios from "axios";
-import { URL } from "../../globalvariables";
+
+import { useStoreState, useStoreActions } from "easy-peasy";
+
+import { Modal, Form, Button } from "semantic-ui-react";
+import { Database } from "react-feather";
+import { addNewToken, fetchAllTokens } from "../../services/tokenService";
 
 const AddTokenButton = () => {
   const [token, setToken] = useState("");
   const [address, setAddress] = useState("");
   const [loading, setLoading] = useState(false);
-  const [tokens, setTokens] = useState([]);
+  const [modalOpen, setModalOpen] = useState(false);
 
-  useEffect(() => {
-    Axios.defaults.headers.common["Authorization"] = localStorage.getItem(
-      "HCtoken"
-    );
-    Axios.get(`${URL}/api/token/user`).then(data => {
-      if (data.data.data) {
-        setTokens(data.data.data.tokens);
-      }
-    });
-  }, []);
+  const tokens = useStoreState(state => state.tokens.allTokens);
+  const setTokens = useStoreActions(action => action.tokens.setTokens);
 
   const handleSubmit = async () => {
     setLoading(true);
-    console.log(token, address);
-    let tkarr = [];
-    tokens.map(tk => {
-      tkarr.push({ name: tk.name, address: tk.address });
-    });
+    const newTokens = [...tokens, { name: token, address: address }];
 
-    let obj = {
-      name: token,
-      address: address
-    };
-
-    tkarr.push(obj);
-    console.log(tkarr);
-    // tokens.push(obj);
-    let Data = {};
-    Data.tokens = tkarr;
-    console.log(Data);
-
-    Axios.defaults.headers.common["Authorization"] = localStorage.getItem(
-      "HCtoken"
-    );
-
-    Axios.post(`${URL}/api/token/add/user`, Data)
-      .then(data => {
-        console.log(data);
-        setLoading(false);
-        window.location.reload();
-      })
-      .catch(error => {
-        setLoading(false);
-
-        swal("Error", "Couldnt add token right now", "error");
-      });
-    // setLoading(false);
+    try {
+      await addNewToken({ tokens: newTokens });
+      const res = await fetchAllTokens();
+      setTokens(res.data.data.tokens);
+    } catch (error) {
+      swal("Error", "Couldnt add token right now", "error");
+    }
+    setLoading(false);
+    setModalOpen(false);
+    swal("Success", `You are now accepting ${token}`, "success");
   };
 
   return (
     <Modal
+      open={modalOpen}
       centered={false}
       trigger={
         <div
           className="fadeInUp button orange-button"
           style={{ animationDelay: "1.3s" }}
+          onClick={() => {
+            setModalOpen(true);
+          }}
         >
           <Database />
           <span>Add a Token</span>

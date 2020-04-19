@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import Countdown from "react-countdown-now";
 
-import * as contractInteraction from "../../utils/contractInteractions";
-import { Loader } from "react-feather";
 import Web3 from "web3";
+import * as contractInteraction from "../../utils/contractInteractions";
+
+import Countdown from "react-countdown-now";
+import { Loader } from "react-feather";
+
 var web3Instance = new Web3();
 
 const EachMail = props => {
@@ -12,16 +14,12 @@ const EachMail = props => {
   const [remainingFund, setRemainingFund] = useState(0);
   const [loading, setLoading] = useState(true);
 
-  // Random component
   const Completionist = () => <span>Email Expired!</span>;
 
-  // Renderer callback with condition
   const renderer = ({ days, hours, minutes, seconds, completed }) => {
     if (completed) {
-      // Render a completed state
       return <Completionist />;
     } else {
-      // Render a countdown
       return (
         <span>
           {days} days {hours} hours {minutes} minutes
@@ -31,18 +29,17 @@ const EachMail = props => {
   };
 
   useEffect(() => {
-    // call the function here
     const getBalance = async () => {
       const balance = await contractInteraction.BalanceOfStream(
         web3Instance,
         props.streamId
       );
-      console.log("balance of stream", balance);
       setRemainingFund(balance);
       setLoading(false);
     };
 
     getBalance();
+    //eslint-disable-next-line
   }, []);
 
   return (

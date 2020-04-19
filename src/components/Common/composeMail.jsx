@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { Form, Button, TextArea, Icon } from "semantic-ui-react";
 import swal from "sweetalert";
-import Axios from "axios";
-import { URL } from "../../globalvariables";
-import { formatDate } from "../../utils/helpers";
-import { Mail } from "react-feather";
 
 import Web3 from "web3";
 import * as contractInteraction from "../../utils/contractInteractions";
+import { formatDate } from "../../utils/helpers";
+
 import Stepper from "react-stepper-horizontal";
+import { Form, Button, TextArea, Icon } from "semantic-ui-react";
+import { Mail } from "react-feather";
 
 import { toast } from "react-toastify";
+import { fetchUserTokens } from "../../services/tokenService";
+import { sendMail } from "../../services/emailService";
 var web3Instance = new Web3();
+
 const ComposeMail = props => {
   const [email, setEmail] = useState(props.mail ? props.mail : "");
   const [subject, setSubject] = useState("");
@@ -20,7 +22,6 @@ const ComposeMail = props => {
   const [selectedTokenAddress, setSelectedTokenAddress] = useState("");
   const [amount, setAmount] = useState(0);
   const [expiry, setExpiry] = useState(formatDate(new Date()));
-  //   const [streamId, setStreamId] = useState("");
   const [rate, setRate] = useState("");
   const [tokenName, setTokenName] = useState("");
 
@@ -30,7 +31,6 @@ const ComposeMail = props => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    // console.log(amount, expiry, selectedTokenAddress);
     const adate = new Date(expiry);
     const today = new Date();
     const diffTime = Math.abs(adate - today);
@@ -49,69 +49,47 @@ const ComposeMail = props => {
         selectedTokenAddress
       );
       setActiveStep(3);
-      setLoading(false);
     } catch (e) {
-      console.log("error while approve token", e);
       toast.error("Unable to approve tokens");
       setActiveStep(2);
-      setLoading(false);
     }
+    setLoading(false);
   };
 
   const fetchTokens = async () => {
     setLoading(true);
     if (email) {
-      Axios.defaults.headers.common["Authorization"] = localStorage.getItem(
-        "HCtoken"
-      );
-      Axios.get(`${URL}/api/token/user/${email}`)
-        .then(data => {
-          //   console.log(data);
-          if (data.data.message == "success") {
-            // console.log(data.data.data.tokens);
-            let tokensarr = [];
-            data.data.data.tokens.map((obj, index) => {
-              tokensarr.push({
-                key: index,
-                text: obj.name,
-                value: obj.address
-              });
+      try {
+        const res = await fetchUserTokens(email);
+        if (res.data.message === "success") {
+          let tokensarr = [];
+          res.data.data.tokens.forEach((obj, index) => {
+            tokensarr.push({
+              key: index,
+              text: obj.name,
+              value: obj.address
             });
-            console.log(tokensarr);
-            setTokens(tokensarr);
-            setLoading(false);
-            setActiveStep(2);
-          } else {
-            // no token for this account
-            setTokens([
-              {
-                key: "no tokens",
-                text: "no tokens",
-                value: "0"
-              }
-            ]);
-            swal("No tokens", "No Receiver tokens for this email", "error");
-            setLoading(false);
-          }
-        })
-        .catch(err => {
-          swal("Couldnt fetch", "Receiver tokens cant be fetched", "error");
-          setLoading(false);
-        });
+          });
+          setTokens(tokensarr);
+          setActiveStep(2);
+        } else {
+          setTokens([
+            {
+              key: "no tokens",
+              text: "no tokens",
+              value: "0"
+            }
+          ]);
+          swal("No tokens", "No Receiver tokens for this email", "error");
+        }
+      } catch (error) {
+        swal("Couldnt fetch", "Receiver tokens cant be fetched", "error");
+      }
     } else {
-      swal(
-        "Please enter Email",
-        "To fetch the tokens receiver can receive",
-        "error"
-      );
-      setLoading(false);
+      swal("Please enter Email", "To fetch the receiver tokens", "error");
     }
+    setLoading(false);
   };
-
-  //   const handleSign = () => {
-  //     console.log("signed");
-  //     setStreamId("0x8f51a68052a3e1d56d145092da42ba13b02146bb");
-  //   };
 
   const handleSubmit = async () => {
     if (email.match(`[a-zA-Z0-9._-]+@[a-z]+.(com|in|net|org|edu)`) === null) {
@@ -137,36 +115,27 @@ const ComposeMail = props => {
         );
         setActiveStep(3);
         setLoading(false);
-        //   const response = await login(email, password);
-        let obj = {};
-        obj.receiver_email = email;
-        obj.sender_email = "random@gmail.com";
-        obj.subject = subject;
-        obj.text = body;
-        obj.html = " ";
-        obj.amount = amount;
-        obj.tokens = selectedTokenAddress;
-        obj.streamId = streamID;
-        obj.rate = rate;
-        obj.expiryDate = expiry;
-        obj.tokenname = tokenName;
-        //   console.log("body", email, subject, body, obj);
-        Axios.defaults.headers.common["Authorization"] = localStorage.getItem(
-          "HCtoken"
-        );
-        Axios.post(`${URL}/api/email/send`, obj)
-          .then(data => {
-            swal("Email Sent", "Click OK to go back!", "success").then(() => {
-              window.location.reload();
-            });
-          })
-          .catch(error => {
-            setLoading(false);
-            swal("Error", "Couldnt send email right now", "error");
-          });
+
+        try {
+          const res = await sendMail(
+            email,
+            "random@gmail.com",
+            subject,
+            body,
+            amount,
+            selectedTokenAddress,
+            streamID,
+            rate,
+            expiry,
+            tokenName
+          );
+          await swal("Email Sent", "Click OK to go back!", "success");
+          window.location.reload();
+        } catch (error) {
+          swal("Error", "Couldnt send email right now", "error");
+        }
         toast.success("Created new stream " + streamID);
       } catch (e) {
-        console.log("error attaching stream", e);
         toast.error("Unable to attach stream to email");
         setLoading(false);
       }
@@ -174,7 +143,6 @@ const ComposeMail = props => {
   };
 
   const goBack = () => {
-    // console.log(email, body, subject);
     if (activeStep === 2) {
       setActiveStep(1);
     } else if (activeStep === 3) {
@@ -319,10 +287,6 @@ const ComposeMail = props => {
 
         {activeStep === 3 ? (
           <>
-            {/* <Button color="green" onClick={handleSign} loading={loading}>
-              3. Sign Txn
-            </Button> */}
-            {/* <p>{streamId}</p> */}
             <div className="preview-mail">
               <div>
                 <Mail />

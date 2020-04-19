@@ -1,14 +1,11 @@
 import React, { useState } from "react";
-import CustomHeader from "../Common/customHeader";
-import { Form, Button } from "semantic-ui-react";
-import swal from "sweetalert";
 import { useHistory } from "react-router-dom";
-import Axios from "axios";
-import setAuthToken from "../../utils/setAuthToken";
-import { URL } from "../../globalvariables";
-import Web3 from "web3";
+import swal from "sweetalert";
 
-var web3Instance = new Web3();
+import { Form, Button } from "semantic-ui-react";
+import CustomHeader from "../Common/customHeader";
+import { loginUser } from "../../services/authService";
+
 const LoginBox = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -31,28 +28,19 @@ const LoginBox = () => {
       );
     } else {
       setLoading(true);
-      let obj = {};
-      obj.email = email;
-      obj.password = password;
+
       await window.ethereum.enable();
 
-      console.log("login", obj);
-      Axios.post(`${URL}/user/login`, obj)
-        .then(data => {
-          console.log(data);
-          if (data.data.success === true) {
-            setLoading(false);
-            const { token } = data.data;
-            localStorage.setItem("HCtoken", token);
-            setAuthToken(token);
-            history.push("/inbox");
-          }
-        })
-        .catch(error => {
-          console.log(error.response.data);
+      try {
+        const res = await loginUser(email, password);
+        if (res.data.success === true) {
           setLoading(false);
-          swal("Error", "Email or password incorrect", "error");
-        });
+          history.push("/inbox");
+        }
+      } catch (error) {
+        setLoading(false);
+        swal("Error", "Email or password incorrect", "error");
+      }
     }
   };
 
@@ -65,7 +53,7 @@ const LoginBox = () => {
           <input
             type="email"
             onChange={e => setEmail(e.target.value)}
-            placeholder="eg : joe@gmail.com"
+            placeholder="eg : jenna@gmail.com"
             name="username"
           />
         </Form.Field>

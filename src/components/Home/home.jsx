@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
+import { Route, Switch, useHistory } from "react-router-dom";
+
 import Tabs from "./tabs";
 import NewEmailButton from "./newEmailButton";
 import CustomHeader from "../Common/customHeader";
-import MailList from "./mailList";
-import { Route, Switch, useHistory } from "react-router-dom";
+import MailList from "../Emails/mailList";
 import LogoutButton from "./logoutButton";
-import DetailView from "../Detail/detailView";
+import DetailView from "../Emails/detailView";
 import AddTokenButton from "./addTokenButton";
 import MyTokens from "./myTokens";
 
@@ -13,6 +14,12 @@ const Home = () => {
   let history = useHistory();
 
   useEffect(() => {
+    const checkMetaMask = async () => {
+      await window.ethereum.enable();
+    };
+
+    checkMetaMask();
+
     if (!localStorage.getItem("HCtoken")) {
       history.push("/login");
     } else {

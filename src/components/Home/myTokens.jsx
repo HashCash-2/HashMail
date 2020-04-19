@@ -1,27 +1,28 @@
-import React, { useState, useEffect } from "react";
-import Axios from "axios";
-import { URL } from "../../globalvariables";
+import React, { useEffect } from "react";
+
+import { fetchAllTokens } from "../../services/tokenService";
+import { useStoreState, useStoreActions } from "easy-peasy";
 
 const MyTokens = () => {
-  const [tokens, setTokens] = useState([]);
+  const tokens = useStoreState(state => state.tokens.allTokens);
+  const setTokens = useStoreActions(action => action.tokens.setTokens);
 
   useEffect(() => {
-    Axios.defaults.headers.common["Authorization"] = localStorage.getItem(
-      "HCtoken"
-    );
-    Axios.get(`${URL}/api/token/user`)
-      .then(data => {
-        setTokens(data.data.data.tokens);
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    const fetchTokens = async () => {
+      try {
+        const res = await fetchAllTokens();
+        setTokens(res.data.data.tokens);
+      } catch (error) {}
+    };
+
+    fetchTokens();
+    // eslint-disable-next-line
   }, []);
 
   return (
     <div className="all-tokens fadeInUp" style={{ animationDelay: "1.3s" }}>
       <ul>
-        {tokens.length != 0
+        {tokens.length !== 0
           ? tokens.map((tk, index) => {
               return (
                 <li key={index}>
