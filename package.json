@@ -10,7 +10,7 @@
     "axios": "^0.19.2",
     "easy-peasy": "^3.3.0",
     "ethers": "^4.0.46",
-    "node-sass": "^4.13.1",
+    "node-sass": "^7.0.0",
     "react": "^16.13.1",
     "react-countdown-now": "^2.1.2",
     "react-dom": "^16.13.1",
